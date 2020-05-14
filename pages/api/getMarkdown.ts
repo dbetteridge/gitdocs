@@ -12,10 +12,12 @@ export default async (req, res) => {
   if (type === "github") {
     const files = await client(
       `https://api.github.com/repos/${org}/${repo}/git/trees/master?recursive=1`,
-      githubBotAccessToken
+      req.headers.authorization,
+      true,
+      req.headers.token_type === "bearer"
     );
     const markdown = files.tree.filter((file) => file.path.endsWith(".md"));
-
+    console.log(markdown.length);
     Promise.all(
       markdown.map(async (file) => {
         const fileDetails = await axios({
@@ -23,13 +25,16 @@ export default async (req, res) => {
           url: `https://api.github.com/repos/${org}/${repo}/contents/${file.path}`,
           headers: {
             accept: "application/json",
-            Authorization: `token ${githubBotAccessToken}`,
+            Authorization: `${req.headers.token_type} ${req.headers.authorization}`,
           },
         }).then((result) => result.data);
+        const { content, download_url, path } = fileDetails;
 
-        const { content } = fileDetails;
         const buffer = new Buffer(content, "base64");
-        const markdownString = buffer.toString();
+        const markdownString = buffer
+          .toString()
+          .replace(/\]\(!(https?)/g, `](${download_url.split(path)[0]}`); // Convert relative URL's to static URL's to github
+
         return {
           ...fileDetails,
           markdown: markdownString,
@@ -44,7 +49,7 @@ export default async (req, res) => {
 
   if (type === "azure") {
     let orgUrl = `https://dev.azure.com/${org}`;
-    let token = azuredevopsAccessToken;
+    let token = req.headers.authorization;
     let authHandler = azdev.getPersonalAccessTokenHandler(token);
     let connection = new azdev.WebApi(orgUrl, authHandler);
     let git = await connection.getGitApi();

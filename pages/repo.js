@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import getCookies from "../utils/cookies";
 
 export default function Repo() {
   const router = useRouter();
   const [state, setstate] = useState([]);
   const { org, repo, type, project } = router.query;
+
+  let token;
   useEffect(() => {
+    const { azure_token, github_token, token_type } = getCookies();
+    token = type === "azure" ? azure_token : github_token;
     const getData = async () => {
       if (org && repo) {
         const data = await fetch(
-          `/api/getMarkdown?type=${type}&org=${org}&project=${project}&repo=${repo}`
+          `/api/getMarkdown?type=${type}&org=${org}&project=${project}&repo=${repo}`,
+          { headers: { Authorization: `${token}`, token_type } }
         ).then((res) => res.json());
         setstate(data);
       }

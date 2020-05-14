@@ -9,8 +9,9 @@ export default async (req, res) => {
   if (type === "github") {
     const repos = await client(
       `https://api.github.com/orgs/${org}/repos?per_page=100`,
-      githubBotAccessToken,
-      false
+      req.headers.authorization,
+      false,
+      req.headers.token_type === "bearer"
     );
     repoList = repos.data;
 
@@ -23,7 +24,9 @@ export default async (req, res) => {
       for (let linkID = nextID; linkID < lastID; linkID++) {
         const nextRepos = await client(
           nextURL.replace(`page=${nextID}`, `page=${linkID}`),
-          githubBotAccessToken
+          req.headers.authorization,
+          true,
+          req.headers.token_type === "bearer"
         );
         if (nextRepos) {
           repoList = [].concat(repoList, nextRepos);
@@ -33,7 +36,7 @@ export default async (req, res) => {
   }
   if (type === "azure") {
     let orgUrl = `https://dev.azure.com/${org}`;
-    let token = azuredevopsAccessToken;
+    let token = req.headers.authorization;
     let authHandler = azdev.getPersonalAccessTokenHandler(token);
     let connection = new azdev.WebApi(orgUrl, authHandler);
     let git = await connection.getGitApi();

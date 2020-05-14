@@ -3,7 +3,7 @@ import axios from "axios";
 
 const cache = {};
 
-export const client = async (url, accessToken, data = true) => {
+export const client = async (url, accessToken, data = true, bearer = false) => {
   const timestamp = moment();
 
   if (Object.keys(cache).includes(url)) {
@@ -20,7 +20,7 @@ export const client = async (url, accessToken, data = true) => {
       url,
       headers: {
         accept: "application/json",
-        Authorization: `token ${accessToken}`,
+        Authorization: `${bearer ? "Bearer" : "token"} ${accessToken}`,
       },
     }).then((result) => (data ? result.data : result));
 
