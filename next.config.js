@@ -1,7 +1,8 @@
 require("dotenv").config();
+const withCSS = require("@zeit/next-css");
 
-module.exports = {
+module.exports = withCSS({
   publicRuntimeConfig: {
     ...process.env,
   },
-};
+});

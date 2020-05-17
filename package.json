@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
     "axios": "^0.19.2",
     "azure-devops-node-api": "^10.1.1",
     "dotenv": "^8.2.0",
+    "github-markdown-css": "^4.0.0",
     "marked": "^1.0.0",
     "moment": "^2.25.3",
     "next": "9.4.0",

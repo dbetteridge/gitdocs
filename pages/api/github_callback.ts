@@ -31,8 +31,7 @@ export default async (req, res) => {
     for (let entry of params) {
       obj[entry[0]] = entry[1];
     }
-    const time = new Date().getTime();
-    obj.expiry_time = (+obj.expires_in + time) / 1000;
+
     return obj;
   });
 
@@ -40,8 +39,6 @@ export default async (req, res) => {
     "Set-Cookie": [
       `github_token=${result.access_token};path=/;`,
       `token_type=${result.token_type};path=/;`,
-      `github_refresh=${result.refresh_token};path=/`,
-      `expiry_time=${result.expiry_time};path=/`,
     ],
     "Content-Type": "text/plain",
     Location: `/?type=github`,

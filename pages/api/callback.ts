@@ -21,7 +21,7 @@ export default async (req, res) => {
   }).then((response) => response.data);
   const time = new Date().getTime();
 
-  const expiry_time: number = (+result.expires_in + time) / 1000;
+  const expiry_time: number = +result.expires_in + time / 1000;
   res.writeHead(302, {
     "Set-Cookie": [
       `azure_token=${result.access_token};path=/;`,

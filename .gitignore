@@ -29,3 +29,4 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 .env
+gitdocspage.2020-05-16.private-key.pem
