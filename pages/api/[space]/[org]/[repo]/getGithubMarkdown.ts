@@ -13,10 +13,10 @@ export default async (req, res) => {
     true,
     token_type === "bearer"
   );
-  const markdown = files.tree.filter((file) => file.path.endsWith(".md"));
-  console.log(markdown.length);
+  const markdownFiles = files.tree.filter((file) => file.path.endsWith(".md"));
+  console.log(markdownFiles.length);
   Promise.all(
-    markdown.map(async (file) => {
+    markdownFiles.map(async (file) => {
       const fileDetails = await axios({
         method: "get",
         url: `https://api.github.com/repos/${org}/${repo}/contents/${file.path}`,
@@ -30,7 +30,8 @@ export default async (req, res) => {
       const buffer = new Buffer(content, "base64");
       const markdownString = buffer
         .toString()
-        .replace(/\]\(?!(https?)/g, `](${download_url.split(path)[0]}`); // Convert relative URL's to static URL's to github
+        .replace(/\]\((?!https?)/g, `](${download_url.split(path)[0]}`);
+      // Convert relative URL's to static URL's to github
 
       return {
         ...fileDetails,
