@@ -1,6 +1,16 @@
 import "github-markdown-css";
 import "./app.css";
+import Themer from "../components/Themed";
+import NavBar from "../components/NavBar";
+import { Flex } from "rebass";
 
 export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <Themer>
+      <Flex width={1} height={"100%"} flexDirection={"column"}>
+        <NavBar />
+        <Component {...pageProps} />
+      </Flex>
+    </Themer>
+  );
 }
