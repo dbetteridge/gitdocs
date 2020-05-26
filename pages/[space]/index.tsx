@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Flex } from "rebass";
 import { useRouter } from "next/router";
-import Spaces from "../components/Spaces";
-const App = () => {
+import Repos from "../../components/Repos";
+
+const Space = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -24,9 +25,9 @@ const App = () => {
         backgroundColor: props.colors.background,
       })}
     >
-      <Spaces />
+      <Repos />
     </Flex>
   );
 };
 
-export default App;
+export default Space;

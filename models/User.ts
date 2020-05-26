@@ -6,6 +6,8 @@ import { getMySpaces, getTokens } from "../controllers/Users";
 Model.knex(db);
 
 class User extends Model {
+  email: string;
+  name: string;
   static idColumn = "email";
 
   static tableName = "users";
@@ -26,12 +28,24 @@ class User extends Model {
     const Token = require("./Token").default;
 
     return {
-      spaces: {
+      ownSpaces: {
         relation: Model.HasManyRelation,
         modelClass: Space,
         join: {
           from: "users.email",
           to: "spaces.owner",
+        },
+      },
+      spaces: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Space,
+        join: {
+          from: "users.email",
+          through: {
+            from: "user_space.user",
+            to: "user_space.space",
+          },
+          to: "spaces.id",
         },
       },
       tokens: {

@@ -5,26 +5,25 @@ import { getMembers } from "../controllers/Spaces";
 Model.knex(db);
 
 class Space extends Model {
-  static tableName() {
-    return "spaces";
-  }
+  id: string;
+  owner: string;
 
-  static idColumn() {
-    return "id";
-  }
+  static tableName = "spaces";
+  static idColumn = "id";
 
   getMembers = () => getMembers(this);
 
   static relationMappings() {
     const Token = require("./Token").default;
     const User = require("./User").default;
+    const Repo = require("./Repo").default;
 
     return {
       tokens: {
         relation: Model.HasManyRelation,
         modelClass: Token,
         join: {
-          from: "space.id",
+          from: "spaces.id",
           to: "token.space",
         },
       },
@@ -38,6 +37,14 @@ class Space extends Model {
             to: "user_space.user",
           },
           to: "users.email",
+        },
+      },
+      repos: {
+        relation: Model.HasManyRelation,
+        modelClass: Repo,
+        join: {
+          from: "spaces.id",
+          to: "repos.owner",
         },
       },
     };

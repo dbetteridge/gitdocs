@@ -3,11 +3,11 @@ import db from "../utils/db";
 import { LoginCredentials, RegistrationDetails } from "../interfaces/Login";
 
 export const getUsers = () => {
-  return User.query().then().catch();
+  return User.query();
 };
 
 export const getUser = (email) => {
-  return User.query().findById(email).then().catch();
+  return User.query().findById(email);
 };
 
 export const login = (credentials: LoginCredentials) => {
@@ -30,7 +30,21 @@ export const register = async (details: RegistrationDetails) => {
   }
 };
 
+/**
+ * Returns the spaces your are owner of
+ * @param user User object
+ *
+ */
 export const getMySpaces = async (user) => {
+  return User.relatedQuery("ownSpaces").for(user.email);
+};
+
+/**
+ * Returns the spaces your are a member of
+ * @param user User object
+ *
+ */
+export const getSpaces = async (user) => {
   return User.relatedQuery("spaces").for(user.email);
 };
 

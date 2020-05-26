@@ -46,7 +46,7 @@ const LoginForm = () => {
         as="form"
         onSubmit={(e) => e.preventDefault()}
         py={3}
-        width={1 / 2}
+        width={[3 / 4, 1 / 4]}
         height={"50%"}
       >
         <Flex
@@ -92,6 +92,7 @@ const LoginForm = () => {
           {error.hasError && <Box>{error.error}</Box>}
           <Box px={2} my={2} width={1}>
             <Button
+              name="register"
               variant="primary"
               mr={2}
               onClick={() => {

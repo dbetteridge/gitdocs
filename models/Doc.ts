@@ -4,13 +4,8 @@ import db from "../utils/db";
 Model.knex(db);
 
 class Doc extends Model {
-  static tableName() {
-    return "docs";
-  }
-
-  static idColumn() {
-    return "id";
-  }
+  static tableName = "docs";
+  static idColumn = "id";
 
   static relationMappings() {
     const Space = require("./Space").default;
