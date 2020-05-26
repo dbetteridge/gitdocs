@@ -1,3 +1,6 @@
+import { getUser } from "../controllers/Users";
+import jwt from "jsonwebtoken";
+
 export function omit(list: object[], properties: string[]): object[] {
   list.forEach((item) => {
     properties.forEach((property) => {
@@ -7,11 +10,11 @@ export function omit(list: object[], properties: string[]): object[] {
   return list;
 }
 
-export function handleChange(key, state, setter) {
-  return (event, value) => {
-    if (value) {
-      setter({ ...state, [key]: value.trim() });
-    }
-    setter({ ...state, [key]: event.target.value.trim() });
-  };
+export async function fetchUser(request) {
+  const {
+    headers: { authorization },
+  } = request;
+  const userDetails = jwt.decode(authorization);
+  const user = await getUser(userDetails.email);
+  return user;
 }
