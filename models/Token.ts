@@ -4,13 +4,9 @@ import db from "../utils/db";
 Model.knex(db);
 
 class Token extends Model {
-  static tableName() {
-    return "tokens";
-  }
+  static tableName = "tokens";
 
-  static idColumn() {
-    return "id";
-  }
+  static idColumn = "id";
 
   static relationMappings() {
     const User = require("./User").default;

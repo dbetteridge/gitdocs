@@ -12,13 +12,6 @@ class User extends Model {
 
   static tableName = "users";
 
-  static query(...args) {
-    const query = super.query(...args);
-    return query.runAfter((result) => {
-      return omit(result, ["hash"]);
-    });
-  }
-
   getMySpaces = () => getMySpaces(this);
 
   getTokens = () => getTokens(this);

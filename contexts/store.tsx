@@ -7,7 +7,7 @@ const initialState = {
   selectedSpace: "",
   selectedRepo: "",
 };
-const store = createContext(initialState);
+const store = createContext(null);
 
 const { Provider } = store;
 

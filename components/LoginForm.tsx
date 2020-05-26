@@ -3,7 +3,7 @@ import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
 import { LoginCredentials } from "../interfaces/Login";
 import { useRouter, NextRouter } from "next/router";
-import { handleChange } from "../utils/helpers";
+import { handleChange } from "../utils/front-helpers";
 
 const login = async (
   details: LoginCredentials,
