@@ -55,19 +55,13 @@ const Repos = () => {
       sx={(props) => ({ backgroundColor: props.colors.muted })}
     >
       <Heading>Repos</Heading>
-      <Flex
-        my={2}
-        flexDirection={"row"}
-        justifyContent={""}
-        alignItems={"center"}
-      >
+      <Flex my={2} flexDirection={"row"} alignItems={"center"}>
         {repos.map((repo) => (
           <Name
             key={repo.id}
             selected={selectedRepo === repo.url}
             onClick={() => {
               setSelected(repo.url);
-              // router.push(`/${selectedSpace}/${repo.url}`);
             }}
           >
             {repo.repo}

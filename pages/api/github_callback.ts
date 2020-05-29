@@ -1,12 +1,6 @@
 import axios from "axios";
-
-interface OAuthTokenResponse {
-  access_token?: string;
-  token_type?: string;
-  expires_in?: number;
-  refresh_token?: string;
-  expiry_time?: number;
-}
+import { addToken } from "../../controllers/Tokens";
+import { OAuthTokenResponse } from "../../interfaces/Login";
 
 export default async (req, res) => {
   const { code, state } = req.query;
@@ -35,13 +29,17 @@ export default async (req, res) => {
     return obj;
   });
 
+  console.log(result, state);
+  const { org, type, space, owner, scopes } = JSON.parse(state);
+  addToken(result, type, org, space, owner, scopes);
+
   res.writeHead(302, {
     "Set-Cookie": [
       `github_token=${result.access_token};path=/;`,
       `token_type=${result.token_type};path=/;`,
     ],
     "Content-Type": "text/plain",
-    Location: `/?type=github`,
+    Location: `/${space}/${type}/${org}`,
   });
   res.end();
 };

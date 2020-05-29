@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 export default function Repo() {
   const router = useRouter();
   const [state, setstate] = useState([]);
-  const { org, repo, type, space } = router.query;
+  const { org, repo, type, project, space } = router.query;
 
   useEffect(() => {
     const getData = async () => {
       if (org && repo) {
-        if (type === "github") {
+        if (type === "azure") {
           const data = await fetch(
-            `/api/${space}/${org}/${repo}/getGithubMarkdown`
+            `/api/${space}/${org}/${repo}/${project}/getAzureMarkdown`
           ).then((res) => res.json());
           setstate(data);
         }

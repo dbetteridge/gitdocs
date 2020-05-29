@@ -12,7 +12,7 @@ export const addRepo = async (url: string, owner: string) => {
   let type, org, project, repo;
   let regexType = /(http(s)?:\/\/(dev.)?)(github|azure)\.com\/([^\/]{1,})(\/)?([^\/]{1,})(\/)?(_git)?(\/)?([^\/]{0,})/;
   const match = url.match(regexType);
-  console.log(match);
+
   if (url.includes("_git")) {
     //AZURE
     // org 6, project 8, repo 12
@@ -37,6 +37,10 @@ export const addRepo = async (url: string, owner: string) => {
   });
 
   return newRepo;
+};
+
+export const getToken = async (repo) => {
+  return await Repo.relatedQuery("token").for(repo.token);
 };
 
 export const getDocs = async (repo) => {

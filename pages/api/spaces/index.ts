@@ -12,7 +12,6 @@ export default async (req, res) => {
   if (req.method === "POST") {
     const { space } = JSON.parse(req.body);
     const user = await fetchUser(req);
-
     const newSpace = await addSpace(space, user.email);
     res.json(newSpace);
   }

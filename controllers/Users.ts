@@ -1,7 +1,6 @@
 import User from "../models/User";
 import db from "../utils/db";
 import { LoginCredentials, RegistrationDetails } from "../interfaces/Login";
-import Space from "../models/Space";
 
 export const getUsers = () => {
   return User.query().select(["email", "name", "lastLogin", "created"]);
