@@ -8,6 +8,17 @@ export const getRepo = async (id) => {
   return await Repo.query().findById(id);
 };
 
+export const getRepoBySpaceOrgType = async (space, org, type, repo) => {
+  return await Repo.query()
+    .where({
+      owner: space,
+      org: org,
+      type: type,
+      repo: repo,
+    })
+    .first();
+};
+
 export const addRepo = async (url: string, owner: string) => {
   let type, org, project, repo;
   let regexType = /(http(s)?:\/\/(dev.)?)(github|azure)\.com\/([^\/]{1,})(\/)?([^\/]{1,})(\/)?(_git)?(\/)?([^\/]{0,})/;
@@ -36,11 +47,13 @@ export const addRepo = async (url: string, owner: string) => {
     repo,
   });
 
+  // const newRepo = { url, owner, type, org, project, repo };
+
   return newRepo;
 };
 
 export const getToken = async (repo) => {
-  return await Repo.relatedQuery("token").for(repo.token);
+  return await Repo.relatedQuery("accessToken").for(repo.token);
 };
 
 export const getDocs = async (repo) => {

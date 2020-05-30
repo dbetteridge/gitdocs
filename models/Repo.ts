@@ -4,12 +4,14 @@ import db from "../utils/db";
 Model.knex(db);
 
 class Repo extends Model {
+  id: number;
   url: string;
   owner: string;
   type: string;
   org: string;
   project: string | null;
   repo: string;
+  token: number;
 
   static tableName = "repos";
   static idColumn = "id";
@@ -28,7 +30,7 @@ class Repo extends Model {
           to: "spaces.id",
         },
       },
-      token: {
+      accessToken: {
         relation: Model.HasOneRelation,
         modelClass: Token,
         join: {

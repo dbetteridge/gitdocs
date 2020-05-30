@@ -11,7 +11,7 @@ class Doc extends Model {
     const Space = require("./Space").default;
 
     return {
-      owner: {
+      docOwner: {
         relation: Model.BelongsToOneRelation,
         modelClass: Space,
         join: {
@@ -24,3 +24,12 @@ class Doc extends Model {
 }
 
 export default Doc;
+
+export interface DocI {
+  name: string;
+  path: string;
+  source: number;
+  owner: string;
+  markdown: string;
+  html: string;
+}

@@ -39,6 +39,15 @@ const Repos = () => {
 
   const setSelected = (value) => {
     dispatch({ type: "SELECT_REPO", repo: value });
+    const repo = repos.filter((repo) => repo.url === value)[0];
+    console.log(repo);
+    if (repo.type === "github") {
+      router.push(`/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`);
+    } else {
+      router.push(
+        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}/${repo.project}`
+      );
+    }
   };
 
   useEffect(() => {

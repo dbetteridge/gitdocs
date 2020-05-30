@@ -130,15 +130,23 @@ const NewRepoForm = () => {
                   );
 
                   if (token.access_token) {
-                    router.push(
-                      `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`
-                    );
+                    if (repo.type === "azure") {
+                      router.push(
+                        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}/${repo.project}`
+                      );
+                    } else {
+                      router.push(
+                        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`
+                      );
+                    }
                   } else {
                     if (repo.type === "azure") {
                       // Go get an azure token
                       // Redirects /api/callback
                       window.location = `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
                         {
+                          project: repo.project,
+                          repo: repo.repo,
                           type: repo.type,
                           org: repo.org,
                           space: selectedSpace,
@@ -151,6 +159,7 @@ const NewRepoForm = () => {
                       // Redirects to /api/github_callback
                       window.location = `${githubURL}?client_id=${clientID}&state=${JSON.stringify(
                         {
+                          repo: repo.repo,
                           type: repo.type,
                           org: repo.org,
                           space: selectedSpace,

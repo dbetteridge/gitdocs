@@ -18,12 +18,8 @@ export function setCookie(name, value, days = null) {
   document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-export const refreshCookies = async (
-  clientSecret,
-  azure_refresh,
-  callback_url
-) => {
-  const cookies = await fetch(
+export const refreshToken = async (refresh_token) => {
+  const result = await fetch(
     "https://app.vssps.visualstudio.com/oauth2/token",
     {
       method: "POST",
@@ -31,15 +27,9 @@ export const refreshCookies = async (
         "Content-Type": "application/x-www-form-urlencoded",
         "Content-Length": "1654",
       },
-      body: `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${clientSecret}&grant_type=refresh_token&assertion=${azure_refresh}&redirect_uri=${callback_url}`,
+      body: `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${process.env.clientSecret}&grant_type=refresh_token&assertion=${refresh_token}&redirect_uri=https://localhost:3000/api/callback`,
     }
   ).then((res) => res.json());
 
-  setCookie("azure_token", cookies["access_token"]);
-  setCookie("azure_refresh", cookies["refresh_token"]);
-  setCookie(
-    "expiry_time",
-    new Date().getTime() / 1000 + +cookies["expires_in"]
-  );
-  location.reload();
+  return result;
 };

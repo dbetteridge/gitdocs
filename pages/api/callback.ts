@@ -5,7 +5,8 @@ import { OAuthTokenResponse } from "../../interfaces/Login";
 export default async (req, res) => {
   const { code, state } = req.query;
   const { clientSecret, tokenURL } = process.env;
-  console.log(req);
+  console.log(state);
+
   const result: OAuthTokenResponse = await axios({
     method: "POST",
     url: tokenURL,
@@ -19,18 +20,11 @@ export default async (req, res) => {
 
   const expiry_time: number = +result.expires_in + time / 1000;
   result.expiry_time = Math.trunc(expiry_time);
-  const { org, type, space, owner, scopes } = JSON.parse(state);
+  const { project, repo, org, type, space, owner, scopes } = JSON.parse(state);
   addToken(result, type, org, space, owner, scopes);
 
   res.writeHead(302, {
-    "Set-Cookie": [
-      `azure_token=${result.access_token};path=/;`,
-      `token_type=${result.token_type};path=/;`,
-      `azure_refresh=${result.refresh_token};path=/`,
-      `expiry_time=${expiry_time};path=/`,
-    ],
-    "Content-Type": "text/plain",
-    Location: `/${space}/${type}/${org}/`,
+    Location: `/${space}/${type}/${org}/${repo}/${project}`,
   });
   res.end();
 };

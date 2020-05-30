@@ -29,17 +29,12 @@ export default async (req, res) => {
     return obj;
   });
 
-  console.log(result, state);
-  const { org, type, space, owner, scopes } = JSON.parse(state);
+  const { repo, org, type, space, owner, scopes } = JSON.parse(state);
+  console.log(state, result);
   addToken(result, type, org, space, owner, scopes);
 
   res.writeHead(302, {
-    "Set-Cookie": [
-      `github_token=${result.access_token};path=/;`,
-      `token_type=${result.token_type};path=/;`,
-    ],
-    "Content-Type": "text/plain",
-    Location: `/${space}/${type}/${org}`,
+    Location: `/${space}/${type}/${org}/${repo}`,
   });
   res.end();
 };

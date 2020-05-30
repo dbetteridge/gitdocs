@@ -10,8 +10,13 @@ export default function Repo() {
     const getData = async () => {
       if (org && repo) {
         if (type === "azure") {
+          const userToken = window.localStorage.getItem("token");
           const data = await fetch(
-            `/api/${space}/${org}/${repo}/${project}/getAzureMarkdown`
+            `/api/${space}/${type}/${org}/${repo}/${project}/getAzureMarkdown`,
+            {
+              method: "GET",
+              headers: { Authorization: userToken },
+            }
           ).then((res) => res.json());
           setstate(data);
         }
@@ -39,7 +44,7 @@ export default function Repo() {
             }}
             key={file.path}
           >
-            <h3>{file.name}</h3>
+            <h3>{file.path}</h3>
             <article
               dangerouslySetInnerHTML={{ __html: file.html }}
               className="markdown-body"

@@ -10,8 +10,13 @@ export default function Repo() {
     const getData = async () => {
       if (org && repo) {
         if (type === "github") {
+          const userToken = window.localStorage.getItem("token");
           const data = await fetch(
-            `/api/${space}/${org}/${repo}/getGithubMarkdown`
+            `/api/${space}/${type}/${org}/${repo}/getGithubMarkdown`,
+            {
+              method: "GET",
+              headers: { Authorization: userToken },
+            }
           ).then((res) => res.json());
           setstate(data);
         }
