@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Flex } from "rebass";
 import { useRouter } from "next/router";
-import Repos from "../../components/Repos";
+import Repos from "@components/Repos";
 
 const Space = () => {
   const router = useRouter();

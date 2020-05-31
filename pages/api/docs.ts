@@ -1,5 +1,5 @@
-import { getDocsBySpaceRepo, getDocByPath } from "../../controllers/Docs";
-import { getRepoBySpaceOrgType } from "../../controllers/Repos";
+import { getDocsBySpaceRepo, getDocByPath } from "@controllers/Docs";
+import { getRepoBySpaceOrgType } from "@controllers/Repos";
 
 export default async (req, res) => {
   if (req.method === "POST") {

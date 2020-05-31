@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import TableOfContents from "../../../../../components/TableOfContents";
+import TableOfContents from "@components/TableOfContents";
 
 export default function Repo() {
   const router = useRouter();

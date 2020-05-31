@@ -1,8 +1,8 @@
-import { addRepo } from "../../../controllers/Repos";
-import { getRepos } from "../../../controllers/Spaces";
-import { getSpaces } from "../../../controllers/Users";
-import { fetchUser } from "../../../utils/helpers";
-import Space from "../../../models/Space";
+import { addRepo } from "@controllers/Repos";
+import { getRepos } from "@controllers/Spaces";
+import { getSpaces } from "@controllers/Users";
+import { fetchUser } from "@utils/helpers";
+import Space from "@models/Space";
 
 export default async (req, res) => {
   if (req.method === "GET") {

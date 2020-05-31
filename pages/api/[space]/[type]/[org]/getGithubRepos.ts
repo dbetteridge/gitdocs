@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { client } from "../../../../../utils/cache";
+import { client } from "@utils/cache";
 
 export default async (req, res) => {
   const { org } = req.query;

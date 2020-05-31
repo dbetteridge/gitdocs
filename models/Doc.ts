@@ -7,6 +7,8 @@ class Doc extends Model {
   id: number;
   name: string;
   path: string;
+  html: string;
+  markdown: string;
 
   static tableName = "docs";
   static idColumn = "id";

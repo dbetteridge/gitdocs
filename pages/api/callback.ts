@@ -1,6 +1,6 @@
 import axios from "axios";
-import { addToken } from "../../controllers/Tokens";
-import { OAuthTokenResponse } from "../../interfaces/Login";
+import { addToken } from "@controllers/Tokens";
+import { OAuthTokenResponse } from "@interfaces/Login";
 
 export default async (req, res) => {
   const { code, state } = req.query;

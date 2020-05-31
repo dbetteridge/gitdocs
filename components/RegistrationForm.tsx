@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
 import { RegistrationDetails } from "../interfaces/Login";
-import { handleChange } from "../utils/front-helpers";
+import { handleChange } from "@utils/front-helpers";
 import { useRouter, NextRouter } from "next/router";
 
 const register = async (

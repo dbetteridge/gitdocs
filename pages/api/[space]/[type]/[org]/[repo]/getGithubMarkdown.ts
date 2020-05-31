@@ -1,10 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { client } from "../../../../../../utils/cache";
+import { client } from "@utils/cache";
 import axios from "axios";
 import marked from "marked";
-import { getDocsBySpaceRepo, addDoc } from "../../../../../../controllers/Docs";
-import { getRepoBySpaceOrgType } from "../../../../../../controllers/Repos";
-import { getTokenByRepoSpace } from "../../../../../../controllers/Tokens";
+import { getDocsBySpaceRepo, addDoc } from "@controllers/Docs";
+import { getRepoBySpaceOrgType } from "@controllers/Repos";
+import { getTokenByRepoSpace } from "@controllers/Tokens";
 
 export default async (req, res) => {
   const { org, repo, type, space } = req.query;

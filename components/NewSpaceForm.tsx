@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
-import { handleChange } from "../utils/front-helpers";
-import { store } from "../contexts/store";
+import { handleChange } from "@utils/front-helpers";
+import { store } from "@contexts/store";
 
 const createSpace = async (
   details,

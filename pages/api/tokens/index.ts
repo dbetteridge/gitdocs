@@ -1,4 +1,4 @@
-import { getTokenByRepoSpace } from "../../../controllers/Tokens";
+import { getTokenByRepoSpace } from "@controllers/Tokens";
 
 export default async (req, res) => {
   if (req.method === "POST") {

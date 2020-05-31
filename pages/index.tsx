@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Flex } from "rebass";
 import { useRouter } from "next/router";
-import Spaces from "../components/Spaces";
+import Spaces from "@components/Spaces";
 const App = () => {
   const router = useRouter();
 

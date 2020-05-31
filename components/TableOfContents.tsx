@@ -1,26 +1,25 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Card, Heading, Button, Flex } from "rebass";
-import { store } from "../contexts/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Repo from "@models/Repo";
 
 const TableOfContents = () => {
   const router = useRouter();
   const { space, type, org, repo, project } = router.query;
   const [docs, setDocs] = useState([]);
-  const [repoDB, setRepo] = useState({});
+  const [repoDB, setRepo] = useState<Repo>();
 
   const fetchRepo = async (setter, space, repo) => {
-    console.log(space);
     const repos = await fetch(`/api/repos/${space}`, {
       method: "GET",
       headers: {
         Authorization: localStorage.getItem("token"),
       },
     }).then((d) => d.json());
-    const repoDB = repos.filter((srepo) => srepo.repo === repo)[0];
+    const repoDB: Repo = repos.filter((srepo) => srepo.repo === repo)[0];
     setter(repoDB);
   };
 
@@ -60,7 +59,7 @@ const TableOfContents = () => {
                 : -1;
             })
             .map((doc) => (
-              <li>
+              <li key={doc.id}>
                 <Flex
                   justifyContent={"space-between"}
                   alignItems={"center"}
@@ -79,7 +78,7 @@ const TableOfContents = () => {
                           )}`
                     }
                   >
-                    {doc.path}
+                    <a>{doc.path}</a>
                   </Link>
                   <a
                     href={repoDB.url + "/blob/master/" + doc.path}

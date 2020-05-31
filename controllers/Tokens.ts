@@ -27,7 +27,7 @@ export const getTokenByRepoSpace = async (repo, spaceID) => {
   ) {
     return updateToken(token);
   } else {
-    return token ? token : { access_token: null };
+    return token ? token : new Token();
   }
 };
 
@@ -71,5 +71,6 @@ export const updateToken = async (token) => {
   return await Token.query()
     .update({ ...updatedToken })
     .where({ id: token.id })
-    .returning("*");
+    .returning("*")
+    .first();
 };

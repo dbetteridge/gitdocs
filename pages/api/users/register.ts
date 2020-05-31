@@ -1,4 +1,4 @@
-import { register } from "../../../controllers/Users";
+import { register } from "@controllers/Users";
 import jwt from "jsonwebtoken";
 export default async (req, res) => {
   const { body } = req;

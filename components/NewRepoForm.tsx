@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
-import { handleChange } from "../utils/front-helpers";
-import { store } from "../contexts/store";
+import { handleChange } from "@utils/front-helpers";
+import { store } from "@contexts/store";
 import jwt from "jsonwebtoken";
 
 import getConfig from "next/config";
@@ -60,15 +60,7 @@ const NewRepoForm = () => {
     setOwner(email);
   }, []);
 
-  const {
-    githubURL,
-    authURL,
-    appID,
-    scopes,
-    clientID,
-    clientSecret,
-  } = publicRuntimeConfig;
-
+  const { githubURL, authURL, appID, scopes, clientID } = publicRuntimeConfig;
   const setState = (value) => {
     dispatch({ type: "ADDSPACE", repo: value });
   };
@@ -143,7 +135,7 @@ const NewRepoForm = () => {
                     if (repo.type === "azure") {
                       // Go get an azure token
                       // Redirects /api/callback
-                      window.location = `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
+                      window.location.href = `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
                         {
                           project: repo.project,
                           repo: repo.repo,
@@ -157,7 +149,7 @@ const NewRepoForm = () => {
                     } else {
                       // Go get a github token
                       // Redirects to /api/github_callback
-                      window.location = `${githubURL}?client_id=${clientID}&state=${JSON.stringify(
+                      window.location.href = `${githubURL}?client_id=${clientID}&state=${JSON.stringify(
                         {
                           repo: repo.repo,
                           type: repo.type,

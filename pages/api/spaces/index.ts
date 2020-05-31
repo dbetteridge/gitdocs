@@ -1,6 +1,6 @@
-import { getSpaces } from "../../../controllers/Users";
-import { addSpace } from "../../../controllers/Spaces";
-import { fetchUser } from "../../../utils/helpers";
+import { getSpaces } from "@controllers/Users";
+import { addSpace } from "@controllers/Spaces";
+import { fetchUser } from "@utils/helpers";
 
 export default async (req, res) => {
   if (req.method === "GET") {

@@ -4,6 +4,17 @@ import db from "../utils/db";
 Model.knex(db);
 
 class Token extends Model {
+  id: number;
+  expiry_time: number;
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  type: string;
+  org: string;
+  space: string;
+  owner: string;
+  scopes: string;
+
   static tableName = "tokens";
 
   static idColumn = "id";
@@ -17,16 +28,6 @@ class Token extends Model {
   static owner = "owner";
   static space = "space";
   static created = "created";
-  id: number;
-  expiry_time: number;
-  access_token: string;
-  token_type: string;
-  refresh_token: string;
-  type: string;
-  org: string;
-  space: string;
-  owner: string;
-  scopes: string;
 
   static relationMappings() {
     const User = require("./User").default;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Card, Heading, Button, Flex } from "rebass";
-import { store } from "../contexts/store";
+import { store } from "@contexts/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import NewSpaceForm from "./NewSpaceForm";

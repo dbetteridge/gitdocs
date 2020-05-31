@@ -1,5 +1,5 @@
-import { getUser } from "../../../controllers/Users";
-import { getMembers } from "../../../controllers/Spaces";
+import { getUser } from "@controllers/Users";
+import { getMembers } from "@controllers/Spaces";
 
 export default async (req, res) => {
   const { id } = req.query;
