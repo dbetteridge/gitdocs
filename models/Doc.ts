@@ -4,6 +4,10 @@ import db from "../utils/db";
 Model.knex(db);
 
 class Doc extends Model {
+  id: number;
+  name: string;
+  path: string;
+
   static tableName = "docs";
   static idColumn = "id";
 

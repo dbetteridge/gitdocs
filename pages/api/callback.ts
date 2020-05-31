@@ -24,7 +24,7 @@ export default async (req, res) => {
   addToken(result, type, org, space, owner, scopes);
 
   res.writeHead(302, {
-    Location: `/${space}/${type}/${org}/${repo}/${project}`,
+    Location: `/${space}/${type}/${org}/${repo}?project=${project}`,
   });
   res.end();
 };

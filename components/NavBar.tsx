@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Flex, Button } from "rebass";
+import { Flex, Button, Box } from "rebass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
@@ -31,9 +31,23 @@ const NavBar = () => {
       px={1}
       py={1}
     >
-      <Button>
-        <FontAwesomeIcon icon={faBars} />
-      </Button>
+      <Box>
+        <Button
+          onClick={() => {
+            router.push("/");
+          }}
+          mx={1}
+        >
+          <FontAwesomeIcon icon={faHome} />
+        </Button>
+        <Button
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Button>
+      </Box>
       <Search />
       <Flex>
         {!isLoggedIn && !isLogin && (

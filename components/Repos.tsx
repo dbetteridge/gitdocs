@@ -38,14 +38,13 @@ const Repos = () => {
   };
 
   const setSelected = (value) => {
-    dispatch({ type: "SELECT_REPO", repo: value });
     const repo = repos.filter((repo) => repo.url === value)[0];
-    console.log(repo);
+    dispatch({ type: "SELECT_REPO", repo: value, repoData: repo });
     if (repo.type === "github") {
       router.push(`/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`);
     } else {
       router.push(
-        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}/${repo.project}`
+        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}?project=${repo.project}`
       );
     }
   };
@@ -64,7 +63,7 @@ const Repos = () => {
       sx={(props) => ({ backgroundColor: props.colors.muted })}
     >
       <Heading>Repos</Heading>
-      <Flex my={2} flexDirection={"row"} alignItems={"center"}>
+      <Flex my={2} flexDirection={"row"} alignItems={"center"} flexWrap="wrap">
         {repos.map((repo) => (
           <Name
             key={repo.id}

@@ -67,6 +67,7 @@ export const updateToken = async (token) => {
   const expiry_time: number = +updatedToken.expires_in + time / 1000;
   updatedToken.expiry_time = expiry_time;
   delete updatedToken.expires_in;
+  delete updatedToken.scope;
   return await Token.query()
     .update({ ...updatedToken })
     .where({ id: token.id })
