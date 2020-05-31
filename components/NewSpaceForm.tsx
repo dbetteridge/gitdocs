@@ -13,7 +13,14 @@ const createSpace = async (
     method: "POST",
     body: JSON.stringify(details),
     headers: { Authorization: token },
-  }).then((response: Response) => response.json());
+  })
+    .then((d) => {
+      if (!d.ok) {
+        window.location.replace("/login");
+      }
+      return d;
+    })
+    .then((response: Response) => response.json());
 
   if (!space.error) {
     setState({ id: details.space, active: true });

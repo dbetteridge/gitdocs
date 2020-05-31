@@ -29,7 +29,7 @@ export const addSpace = async (id: string, owner: string) => {
 };
 
 export const getRepos = async (space) => {
-  const repos = await Repo.query().where({ owner: space.id });
+  const repos = await Repo.query().where({ owner: space });
   if (repos) return repos;
   else return [];
 };

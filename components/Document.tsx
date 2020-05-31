@@ -19,7 +19,14 @@ export default function Document() {
         repo: repo,
         path,
       }),
-    }).then((d) => d.json());
+    })
+      .then((d) => {
+        if (!d.ok) {
+          router.push("/login");
+        }
+        return d;
+      })
+      .then((d) => d.json());
     setDoc(doc);
   };
 

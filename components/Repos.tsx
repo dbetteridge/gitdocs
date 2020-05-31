@@ -12,7 +12,14 @@ const fetchRepos = async (setter, space) => {
     headers: {
       Authorization: localStorage.getItem("token"),
     },
-  }).then((d) => d.json());
+  })
+    .then((d) => {
+      if (!d.ok) {
+        window.location.replace("/login");
+      }
+      return d;
+    })
+    .then((d) => d.json());
   setter(repos);
 };
 

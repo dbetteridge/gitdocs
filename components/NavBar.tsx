@@ -60,6 +60,17 @@ const NavBar = () => {
             <Button mx={2}>Register</Button>
           </Link>
         )}
+        {isLoggedIn && (
+          <Button
+            mx={2}
+            onClick={() => {
+              localStorage.removeItem("token");
+              window.location.reload();
+            }}
+          >
+            Logout
+          </Button>
+        )}
       </Flex>
     </Flex>
   );

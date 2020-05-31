@@ -5,12 +5,14 @@ import marked from "marked";
 import { getDocsBySpaceRepo, addDoc } from "@controllers/Docs";
 import { getRepoBySpaceOrgType } from "@controllers/Repos";
 import { getTokenByRepoSpace } from "@controllers/Tokens";
+import { isAllowed } from "@utils/helpers";
 
 export default async (req, res) => {
   const { org, repo, type, space } = req.query;
   const repoDB = await getRepoBySpaceOrgType(space, org, type, repo);
 
   const docs = await getDocsBySpaceRepo(space, repoDB.id);
+  await isAllowed(req, space, res);
 
   if (docs.length > 0) {
     res.statusCode = 200;

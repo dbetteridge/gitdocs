@@ -12,7 +12,15 @@ const fetchSpaces = async (setter) => {
     headers: {
       Authorization: localStorage.getItem("token"),
     },
-  }).then((d) => d.json());
+  })
+    .then((d) => {
+      if (!d.ok) {
+        window.location.replace("/login");
+      } else {
+        return d;
+      }
+    })
+    .then((d) => d.json());
   setter(spaces);
 };
 
@@ -57,21 +65,22 @@ const Spaces = () => {
         flexWrap={"wrap"}
         alignItems={"center"}
       >
-        {spaces.map(
-          (space) =>
-            space.active && (
-              <Name
-                key={space.id}
-                selected={selectedSpace === space.id}
-                onClick={() => {
-                  setSelected(space.id);
-                  router.push(`/${space.id}`);
-                }}
-              >
-                {space.id}
-              </Name>
-            )
-        )}
+        {spaces &&
+          spaces.map(
+            (space) =>
+              space.active && (
+                <Name
+                  key={space.id}
+                  selected={selectedSpace === space.id}
+                  onClick={() => {
+                    setSelected(space.id);
+                    router.push(`/${space.id}`);
+                  }}
+                >
+                  {space.id}
+                </Name>
+              )
+          )}
       </Flex>
       <Button
         onClick={() => {

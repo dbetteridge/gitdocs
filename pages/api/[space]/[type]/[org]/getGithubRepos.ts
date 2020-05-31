@@ -1,10 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { client } from "@utils/cache";
+import { isAllowed } from "@utils/helpers";
 
 export default async (req, res) => {
-  const { org } = req.query;
+  const { org, space } = req.query;
   const { github_token, token_type } = req.cookies;
   let repoList;
+  await isAllowed(req, space, res);
 
   const repos = await client(
     `https://api.github.com/orgs/${org}/repos?per_page=100`,

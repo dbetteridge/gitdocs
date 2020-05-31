@@ -1,10 +1,16 @@
 import { getUser } from "@controllers/Users";
-import { getMembers } from "@controllers/Spaces";
+import { fetchUser } from "@utils/helpers";
 
 export default async (req, res) => {
   const { id } = req.query;
 
   const user = await getUser(id);
+  try {
+    await fetchUser(req);
+  } catch (err) {
+    res.status(403);
+    res.json({ error: err });
+  }
 
   if (user) {
     res.status(200);

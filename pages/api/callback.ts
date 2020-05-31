@@ -5,7 +5,6 @@ import { OAuthTokenResponse } from "@interfaces/Login";
 export default async (req, res) => {
   const { code, state } = req.query;
   const { clientSecret, tokenURL } = process.env;
-  console.log(state);
 
   const result: OAuthTokenResponse = await axios({
     method: "POST",

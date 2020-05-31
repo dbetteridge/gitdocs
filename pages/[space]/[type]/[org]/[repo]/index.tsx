@@ -18,7 +18,14 @@ export default function Repo() {
               method: "GET",
               headers: { Authorization: userToken },
             }
-          ).then((res) => res.json());
+          )
+            .then((d) => {
+              if (!d.ok) {
+                window.location.replace("/login");
+              }
+              return d;
+            })
+            .then((res) => res.json());
           setstate(data);
         }
 
@@ -30,7 +37,14 @@ export default function Repo() {
               method: "GET",
               headers: { Authorization: userToken },
             }
-          ).then((res) => res.json());
+          )
+            .then((d) => {
+              if (!d.ok) {
+                window.location.replace("/login");
+              }
+              return d;
+            })
+            .then((res) => res.json());
           setstate(data);
         }
       }

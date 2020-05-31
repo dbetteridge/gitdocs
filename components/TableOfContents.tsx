@@ -18,7 +18,14 @@ const TableOfContents = () => {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
-    }).then((d) => d.json());
+    })
+      .then((d) => {
+        if (!d.ok) {
+          window.location.replace("/login");
+        }
+        return d;
+      })
+      .then((d) => d.json());
     const repoDB: Repo = repos.filter((srepo) => srepo.repo === repo)[0];
     setter(repoDB);
   };
@@ -35,7 +42,14 @@ const TableOfContents = () => {
         org: org,
         repo: repo,
       }),
-    }).then((d) => d.json());
+    })
+      .then((d) => {
+        if (!d.ok) {
+          window.location.replace("/login");
+        }
+        return d;
+      })
+      .then((d) => d.json());
     setter(docs);
   };
 

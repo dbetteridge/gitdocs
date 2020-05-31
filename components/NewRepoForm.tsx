@@ -18,7 +18,14 @@ const createRepo = async (
     method: "POST",
     body: JSON.stringify(details),
     headers: { Authorization: userToken },
-  }).then((response: Response) => response.json());
+  })
+    .then((d) => {
+      if (!d.ok) {
+        window.location.replace("/login");
+      }
+      return d;
+    })
+    .then((response: Response) => response.json());
 
   if (!repo.error) {
     setState({ url: details.repo });
@@ -41,7 +48,14 @@ const fetchToken = async (repo, spaceID) => {
       Authorization: localStorage.getItem("token"),
     },
     body: JSON.stringify({ repo, spaceID }),
-  }).then((d) => d.json());
+  })
+    .then((d) => {
+      if (!d.ok) {
+        window.location.replace("/login");
+      }
+      return d;
+    })
+    .then((d) => d.json());
   return token;
 };
 

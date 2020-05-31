@@ -3,17 +3,16 @@ import marked from "marked";
 import * as azdev from "azure-devops-node-api";
 import { VersionControlRecursionType } from "azure-devops-node-api/interfaces/GitInterfaces";
 import { getRepoBySpaceOrgType } from "@controllers/Repos";
-import { type } from "os";
 import { getDocsBySpaceRepo, addDoc } from "@controllers/Docs";
 import { getTokenByRepoSpace } from "@controllers/Tokens";
-import { fetchUser } from "@utils/helpers";
+import { isAllowed } from "@utils/helpers";
 import Token from "@models/Token";
 
 export default async (req, res) => {
   const { authURL, appID, scopes } = process.env;
   const { org, repo, type, space, project } = req.query;
   const repoDB = await getRepoBySpaceOrgType(space, org, type, repo);
-  const user = await fetchUser(req);
+  await isAllowed(req, space, res);
 
   const docs = await getDocsBySpaceRepo(space, repoDB.id);
 
@@ -23,8 +22,6 @@ export default async (req, res) => {
   } else {
     const tokenDB: Token = await getTokenByRepoSpace(repoDB, space);
     let token = tokenDB.access_token;
-
-    console.log(token);
     let orgUrl = `https://dev.azure.com/${org}`;
 
     let authHandler = azdev.getPersonalAccessTokenHandler(token);
