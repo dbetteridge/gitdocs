@@ -7,6 +7,7 @@ export interface RegistrationDetails {
   name: string;
   email: string;
   password: string;
+  invite_token?: string;
 }
 
 export interface OAuthTokenResponse {

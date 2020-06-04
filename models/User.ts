@@ -8,6 +8,7 @@ Model.knex(db);
 class User extends Model {
   email: string;
   name: string;
+
   static idColumn = "email";
 
   static tableName = "users";

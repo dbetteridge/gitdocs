@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
 import { RegistrationDetails } from "../interfaces/Login";
@@ -15,7 +15,8 @@ const register = async (
     body: JSON.stringify(details),
   }).then((response: Response) => response.json());
   if (!token.error) {
-    window.localStorage.setItem("token", token);
+    window.localStorage.setItem("token", token.token);
+    window.localStorage.removeItem("invite");
     router.push("/");
   } else {
     setError({ hasError: true, error: token.error });
@@ -26,14 +27,20 @@ const register = async (
   }
 };
 
-const LoginForm = () => {
+const RegistrationForm = () => {
   const [state, setState] = useState<RegistrationDetails>({
     name: "",
     email: "",
     password: "",
+    invite_token: "",
   });
   const [error, setError] = useState({ hasError: false, error: "" });
   const router = useRouter();
+
+  useEffect(() => {
+    setState({ ...state, invite_token: window.localStorage.getItem("invite") });
+  }, []);
+
   return (
     <Flex
       flexDirection={"column"}
@@ -108,4 +115,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegistrationForm;

@@ -1,6 +1,7 @@
 import User from "../models/User";
 import db from "../utils/db";
 import { LoginCredentials, RegistrationDetails } from "../interfaces/Login";
+import { acceptInvite } from "./Invites";
 
 export const getUsers = () => {
   return User.query().select(["email", "name", "lastLogin", "created"]);
@@ -26,6 +27,11 @@ export const register = async (details: RegistrationDetails) => {
       details.email,
       details.password,
     ]);
+    if (details.invite_token) {
+      const invite = await acceptInvite(details.invite_token, details.email);
+      result.invite = invite;
+      return result;
+    }
     return result;
   } catch (err) {
     return err;

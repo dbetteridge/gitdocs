@@ -8,7 +8,11 @@ export default async (req, res) => {
   if (result.rows) {
     const user = result.rows[0];
     const token = jwt.sign(user.register, process.env.SECRET);
-    res.json({ token });
+    if (result.invite) {
+      res.json({ token, invite: result.invite });
+    } else {
+      res.json({ token });
+    }
   } else {
     res.json({ error: result.detail });
   }
