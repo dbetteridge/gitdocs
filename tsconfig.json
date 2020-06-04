@@ -7,7 +7,8 @@
       "@utils*": ["utils*"],
       "@controllers*": ["controllers*"],
       "@contexts*": ["contexts*"],
-      "@pages*": ["pages*"]
+      "@pages*": ["pages*"],
+      "@interfaces*": ["interfaces*"]
     },
     "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
