@@ -17,3 +17,8 @@ export interface OAuthTokenResponse {
   refresh_token?: string;
   expiry_time?: number;
 }
+
+export interface RegistrationResult {
+  error?: string;
+  token?: string;
+}

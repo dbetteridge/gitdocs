@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
-import { RegistrationDetails } from "../interfaces/Login";
+import { RegistrationDetails, RegistrationResult } from "../interfaces/Login";
 import { handleChange } from "@utils/front-helpers";
 import { useRouter, NextRouter } from "next/router";
 
@@ -10,21 +10,39 @@ const register = async (
   router: NextRouter,
   { setState, setError, state }
 ) => {
+  const registrationResult = await registerUser(details);
+  if (!registrationResult.error) {
+    handleRegistrationSuccess(registrationResult, router);
+  } else {
+    handleRegistrationError(registrationResult, state, setError, setState);
+  }
+};
+
+const registerUser = async (details): Promise<RegistrationResult> => {
   const token = await fetch("/api/users/register", {
     method: "POST",
     body: JSON.stringify(details),
   }).then((response: Response) => response.json());
-  if (!token.error) {
-    window.localStorage.setItem("token", token.token);
-    window.localStorage.removeItem("invite");
-    router.push("/");
-  } else {
-    setError({ hasError: true, error: token.error });
-    setTimeout(() => {
-      setError({ hasError: false, error: "" });
-      setState({ ...state, email: "" });
-    }, 1500);
-  }
+  return token;
+};
+
+const handleRegistrationSuccess = (registrationResult, router) => {
+  window.localStorage.setItem("token", registrationResult.token);
+  window.localStorage.removeItem("invite");
+  router.push("/");
+};
+
+const handleRegistrationError = (
+  registrationResult,
+  state,
+  setError,
+  setState
+) => {
+  setError({ hasError: true, error: registrationResult.error });
+  setTimeout(() => {
+    setError({ hasError: false, error: "" });
+    setState({ ...state, email: "" });
+  }, 1500);
 };
 
 const RegistrationForm = () => {
