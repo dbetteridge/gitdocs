@@ -65,8 +65,9 @@ const Repos = () => {
 
   return (
     <Card
-      width={[1, 3 / 4]}
+      width={[1, 1]}
       px={5}
+      mx={5}
       sx={(props) => ({ backgroundColor: props.colors.muted })}
     >
       <Heading>Repos</Heading>

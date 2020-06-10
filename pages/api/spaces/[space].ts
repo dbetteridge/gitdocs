@@ -3,17 +3,21 @@ import { fetchUser } from "@utils/helpers";
 import mailjet from "node-mailjet";
 
 const message = (invite_token, space, owner, user) => {
+  const url =
+    process.env.NODE_ENV === "production"
+      ? "https://gitdocs.page"
+      : "https://localhost:3000";
   return {
     From: {
       Email: "admin@gitdocs.page",
       Name: "Gitdocs Admin",
     },
     To: [{ Email: user }],
-    Subject: `${owner} has invited you to https://gitdocs.page/${space}`,
-    TextPart: `${owner} has invited you to https://gitdocs.page/${space}`,
+    Subject: `${owner} has invited you to ${url}/${space}`,
+    TextPart: `${owner} has invited you to ${url}/${space}`,
     HTMLPart: `
     <h3>Please click the link below to accept</h3><br/>
-    <a href=https://gitdocs.page/register/${invite_token}>Accept Invite</a>`,
+    <a href=${url}/register/${invite_token}>Accept Invite</a>`,
     CustomID: invite_token,
   };
 };
@@ -21,12 +25,12 @@ const message = (invite_token, space, owner, user) => {
 export default async (req, res) => {
   if (req.method === "POST") {
     const { space } = req.query;
-    const { users } = JSON.parse(req.body);
+    const { emails } = JSON.parse(req.body);
     try {
       const user = await fetchUser(req);
       if (isOwner(space, user)) {
         const results = await Promise.all(
-          users.map((sUser) => inviteMember(space, sUser))
+          emails.map((sUser) => inviteMember(space, sUser))
         );
         // Send emails
         const messages = results

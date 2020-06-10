@@ -21,7 +21,8 @@ export const addMember = async (space, user) => {
 };
 
 export const isOwner = async (space, user) => {
-  const spaces = await Space.query().where({ id: space, owner: user });
+  const spaces = await Space.query().where({ id: space, owner: user.email });
+  console.log(space, user.email, spaces);
   return spaces.length > 0;
 };
 

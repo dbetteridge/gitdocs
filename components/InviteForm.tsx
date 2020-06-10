@@ -1,39 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
 import { useRouter, NextRouter } from "next/router";
 import { handleChange } from "@utils/front-helpers";
 
 const inviteUser = async (
-  details: { email?: string; space?: string },
+  details: { emails?: string[]; space?: string | string[] },
   router: NextRouter,
   { setState, setSuccess, setError }
 ) => {
   const result = await fetch(`/api/spaces/${details.space}`, {
     method: "POST",
-    body: JSON.stringify({ email: details.email }),
+    body: JSON.stringify({ emails: details.emails }),
+    headers: { Authorization: localStorage.getItem("token") },
   }).then((response: Response) => response.json());
 
   if (result) {
     setSuccess(true);
-    setState({ email: "", space: "" });
+    setState({ emails: [], space: "" });
   } else {
-    setError({ hasError: true, error: "Username or Password is incorrect" });
+    setError({
+      hasError: true,
+      error: `Invite to ${details.emails} for ${details.space} failed`,
+    });
     setTimeout(() => {
       setError({ hasError: false, error: "" });
-      setState({ email: "", space: "" });
+      setState({ emails: [], space: "" });
     }, 1000);
   }
 };
 
 const InviteForm = () => {
   const router = useRouter();
-  const [state, setState] = useState<{ email: string; space?: string }>({
-    email: "",
+  const [state, setState] = useState<{
+    emails: string[];
+    space?: string | string[];
+  }>({
+    emails: [],
     space: router.query.space,
   });
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState({ hasError: false, error: "" });
+
+  const addEmail = (email) => {
+    setState({ ...state, emails: state.emails.concat([email]) });
+  };
+
+  useEffect(() => {
+    setState({ ...state, space: router.query.space });
+  }, [router.query.space]);
   if (success) {
     return <h3>Invited successfully</h3>;
   }
@@ -42,7 +57,7 @@ const InviteForm = () => {
       flexDirection={"column"}
       justifyContent={"center"}
       alignItems={"center"}
-      width={"100%"}
+      width={"50%"}
     >
       <Box
         as="form"
@@ -52,14 +67,19 @@ const InviteForm = () => {
       >
         <Flex width={1} flexDirection={"column"}>
           <Box px={2} my={2} width={1}>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="emails">Emails</Label>
+            <br />
             <Input
-              autoComplete="email"
-              name="email"
-              onChange={handleChange("email", state, setState)}
-              onSelect={handleChange("email", state, setState)}
-              onFocus={handleChange("email", state, setState)}
-              onMouseOver={handleChange("email", state, setState)}
+              autoComplete="emails"
+              name="emails"
+              onChange={(event, value) => {
+                if (value) {
+                  addEmail(value.trim());
+                }
+                if (event.target.value) {
+                  addEmail(event.target.value.trim());
+                }
+              }}
             ></Input>
           </Box>
 

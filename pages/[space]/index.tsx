@@ -16,9 +16,9 @@ const Space = () => {
 
   return (
     <Flex
-      flexDirection={"column"}
-      justifyContent={"flex-start"}
-      alignItems={"center"}
+      flexDirection={"row"}
+      justifyContent={"center"}
+      alignItems={"flex-start"}
       my={4}
       width={"100%"}
       height={"100%"}
