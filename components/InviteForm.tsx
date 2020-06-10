@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
 import { useRouter, NextRouter } from "next/router";
-import { handleChange } from "@utils/front-helpers";
+import { debounce } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const inviteUser = async (
   details: { emails?: string[]; space?: string | string[] },
@@ -33,18 +35,25 @@ const inviteUser = async (
 const InviteForm = () => {
   const router = useRouter();
   const [state, setState] = useState<{
+    emailInput: string;
     emails: string[];
     space?: string | string[];
   }>({
+    emailInput: "",
     emails: [],
     space: router.query.space,
   });
+
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState({ hasError: false, error: "" });
 
-  const addEmail = (email) => {
-    setState({ ...state, emails: state.emails.concat([email]) });
-  };
+  const addEmail = debounce((email) => {
+    setState({
+      ...state,
+      emails: state.emails.concat([email]),
+      emailInput: "",
+    });
+  }, 300);
 
   useEffect(() => {
     setState({ ...state, space: router.query.space });
@@ -72,6 +81,7 @@ const InviteForm = () => {
             <Input
               autoComplete="emails"
               name="emails"
+              value={state.emailInput}
               onChange={(event, value) => {
                 if (value) {
                   addEmail(value.trim());
@@ -81,6 +91,35 @@ const InviteForm = () => {
                 }
               }}
             ></Input>
+            <Box>
+              {state.emails.map((email) => (
+                <Flex
+                  flexDirection={"row"}
+                  justifyContent={"center"}
+                  px={1}
+                  py={1}
+                  my={1}
+                  sx={{
+                    border: "1px solid grey",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <Box width={0.9} sx={{ fontSize: "12px" }}>
+                    {email}
+                  </Box>
+                  <FontAwesomeIcon
+                    width={0.1}
+                    icon={faTimes}
+                    onClick={() => {
+                      setState({
+                        ...state,
+                        emails: state.emails.filter((item) => item !== email),
+                      });
+                    }}
+                  />
+                </Flex>
+              ))}
+            </Box>
           </Box>
 
           {error.hasError && <Box>{error.error}</Box>}

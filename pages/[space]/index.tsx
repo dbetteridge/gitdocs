@@ -26,8 +26,10 @@ const Space = () => {
         backgroundColor: props.colors.background,
       })}
     >
-      <Repos />
-      <InviteForm />
+      <Flex width={1}>
+        <Repos />
+        <InviteForm />
+      </Flex>
     </Flex>
   );
 };
