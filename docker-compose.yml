@@ -1,0 +1,25 @@
+version: "3"
+services:
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - PORT=3000
+      - PG_HOSTNAME=db
+      - PG_DB=gitdocs_dev
+      - PG_USERNAME=postgres
+      - PG_PASSWORD=devuser
+      - PG_PORT=5432
+      - NEPTUNE_URL=empty
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app/
+  db:
+    image: postgres:12
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=devuser

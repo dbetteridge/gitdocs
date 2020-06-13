@@ -4,9 +4,11 @@ module.exports = {
   development: {
     client: "postgresql",
     connection: {
-      database: "gitdocs",
-      user: "postgres",
-      password: "devuser",
+      host: process.env.PG_HOSTNAME,
+      database: process.env.PG_DB,
+      user: process.env.PG_USERNAME,
+      password: process.env.PG_PASSWORD,
+      port: process.env.PG_PORT,
     },
     pool: {
       min: 2,
