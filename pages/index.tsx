@@ -7,7 +7,7 @@ const App = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token && router) {
       router.push("/login");
     }
   });
@@ -21,7 +21,7 @@ const App = () => {
       width={"100%"}
       height={"100%"}
       sx={(props) => ({
-        backgroundColor: props.colors.background,
+        backgroundColor: props && props.colors && props.colors.background,
       })}
     >
       <Spaces />

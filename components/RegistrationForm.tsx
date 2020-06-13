@@ -10,6 +10,15 @@ const register = async (
   router: NextRouter,
   { setState, setError, state }
 ) => {
+  if (!details.email || !details.password) {
+    setError({
+      hasError: true,
+      error: "Username and Password cannot be empty",
+    });
+    setTimeout(() => {
+      setError({ hasError: false, error: "" });
+    }, 1500);
+  }
   const registrationResult = await registerUser(details);
   if (!registrationResult.error) {
     handleRegistrationSuccess(registrationResult, router);
@@ -83,6 +92,7 @@ const RegistrationForm = () => {
           <Box px={2} my={2} width={1}>
             <Label htmlFor="name">Name</Label>
             <Input
+              id="name"
               autoComplete="name"
               name="name"
               onChange={handleChange("name", state, setState)}
@@ -94,6 +104,7 @@ const RegistrationForm = () => {
           <Box px={2} my={2} width={1}>
             <Label htmlFor="email">Email</Label>
             <Input
+              id="email"
               autoComplete="email"
               name="email"
               onChange={handleChange("email", state, setState)}
@@ -103,8 +114,9 @@ const RegistrationForm = () => {
             ></Input>
           </Box>
           <Box px={2} my={2} width={1}>
-            <Label htmlFor="Password">Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
+              id="password"
               type="password"
               autoComplete="password"
               name="password"

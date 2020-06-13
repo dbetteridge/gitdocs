@@ -34,7 +34,7 @@ const NavBar = () => {
       <Box width={[1 / 2, 1 / 2]}>
         <Button
           onClick={() => {
-            router.push("/");
+            router.push("/", "/");
           }}
           mx={1}
         >

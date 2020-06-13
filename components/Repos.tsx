@@ -2,13 +2,17 @@ import React, { useEffect, useState, useContext } from "react";
 import { Card, Heading, Button, Flex } from "rebass";
 import { store } from "../contexts/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import NewRepoForm from "./NewRepoForm";
 import { useRouter } from "next/router";
 import InviteForm from "@components/InviteForm";
 import FullWidthLine from "./FullWidthLine";
+import useSWR from "swr";
 
 const fetchRepos = async (setter, space) => {
+  if (!space) {
+    return null;
+  }
   const repos = await fetch(`/api/repos/${space}`, {
     method: "GET",
     headers: {
@@ -16,13 +20,11 @@ const fetchRepos = async (setter, space) => {
     },
   })
     .then((d) => {
-      if (!d.ok) {
-        window.location.replace("/login");
-      }
       return d;
     })
     .then((d) => d.json());
   setter(repos);
+  return repos;
 };
 
 const Name = (props) => (
@@ -50,25 +52,33 @@ const Repos = () => {
     const repo = repos.filter((repo) => repo.url === value)[0];
     dispatch({ type: "SELECT_REPO", repo: value, repoData: repo });
     if (repo.type === "github") {
-      router.push(`/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`);
+      router.push(
+        "/[space]/[type]/[org]/[repo]",
+        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`
+      );
     } else {
       router.push(
+        "/[space]/[type]/[org]/[repo]?project=[project]",
         `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}?project=${repo.project}`
       );
     }
   };
-
   useEffect(() => {
-    if (router.query.space) {
-      dispatch({ type: "SELECT_SPACE", space: router.query.space });
-      fetchRepos(setUserRepos, router.query.space);
-    }
+    dispatch({ type: "SELECT_SPACE", space: router.query.space });
   }, [router.query]);
 
+  const { data, error } = useSWR(state.selectedSpace, (space) =>
+    fetchRepos(setUserRepos, space)
+  );
+  if (error) {
+    return null;
+  }
   return (
     <Card
       width={[1, 1]}
-      mx={5}
+      mx={2}
+      px={4}
+      py={3}
       sx={(props) => ({ backgroundColor: props.colors.muted })}
     >
       <Heading>Repos</Heading>
@@ -85,15 +95,16 @@ const Repos = () => {
           </Name>
         ))}
       </Flex>
-      {!state.showNewRepoForm && (
-        <Button
-          onClick={() => {
-            dispatch({ type: "TOGGLE_NEW_REPO_FORM" });
-          }}
-        >
-          <FontAwesomeIcon icon={faPlus} />
-        </Button>
-      )}
+
+      <Button
+        mb={4}
+        onClick={() => {
+          dispatch({ type: "TOGGLE_NEW_REPO_FORM" });
+        }}
+      >
+        <FontAwesomeIcon icon={state.showNewRepoForm ? faMinus : faPlus} />
+      </Button>
+
       {state.showNewRepoForm && <FullWidthLine />}
       {state.showNewRepoForm && <NewRepoForm />}
       <FullWidthLine />

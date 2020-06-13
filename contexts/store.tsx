@@ -32,7 +32,6 @@ const StateProvider = ({ children }) => {
       case "TOGGLE_NEW_REPO_FORM":
         return { ...state, showNewRepoForm: !state.showNewRepoForm };
       case "SELECT_REPO":
-        console.log(action);
         return { ...state, selectedRepo: action.repo, repo: action.repoData };
       case "SETDOCS":
         return { ...state, docs: action.docs };

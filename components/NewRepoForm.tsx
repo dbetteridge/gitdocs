@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
 import { Label, Input } from "@rebass/forms";
-import { handleChange } from "@utils/front-helpers";
+import { handleChange, timedError } from "@utils/front-helpers";
 import { store } from "@contexts/store";
 import jwt from "jsonwebtoken";
 
@@ -33,11 +33,7 @@ const createRepo = async (
     toggleForm();
     return repo;
   } else {
-    setError({ hasError: true, error: repo.error });
-    setTimeout(() => {
-      setError({ hasError: false, error: "" });
-      setRepo({ repo: "" });
-    }, 1000);
+    timedError(repo.error, setError, () => setRepo({ repo: "" }));
   }
 };
 
@@ -65,7 +61,6 @@ const NewRepoForm = () => {
   const globalState: any = useContext(store);
   const { dispatch, state } = globalState;
   const { selectedSpace } = state;
-  const [token, setToken] = useState(false);
   const [owner, setOwner] = useState({});
 
   useEffect(() => {
@@ -110,13 +105,17 @@ const NewRepoForm = () => {
               onMouseOver={handleChange("repo", repo, setRepo)}
             ></Input>
           </Box>
-          {error.hasError && <Box>{error.error}</Box>}
+          {error.hasError && <Box width={1}>{error.error}</Box>}
           <Box my={2} width={1}>
             <Button
               name="createRepo"
               variant="primary"
               mr={2}
               onClick={() => {
+                if (repo.repo.length === 0) {
+                  timedError("Repository URL must be entered", setError, null);
+                  return;
+                }
                 createRepo(repo, {
                   space: selectedSpace,
                   setState,

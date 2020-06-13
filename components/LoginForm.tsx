@@ -10,6 +10,16 @@ const login = async (
   router: NextRouter,
   { setState, setError }
 ) => {
+  if (details.email.length === 0 || details.password.length === 0) {
+    setError({
+      hasError: true,
+      error: "Email and Password cannot be empty",
+    });
+    setTimeout(() => {
+      setError({ hasError: false, error: "" });
+    }, 1000);
+    return;
+  }
   const token = await fetch("/api/users/login", {
     method: "POST",
     body: JSON.stringify(details),
@@ -19,7 +29,7 @@ const login = async (
     window.localStorage.setItem("token", token);
     router.push("/");
   } else {
-    setError({ hasError: true, error: "Username or Password is incorrect" });
+    setError({ hasError: true, error: "Email or Password is incorrect" });
     setTimeout(() => {
       setError({ hasError: false, error: "" });
       setState({ email: "", password: "" });
@@ -58,6 +68,7 @@ const LoginForm = () => {
           <Box px={2} my={2} width={1}>
             <Label htmlFor="email">Email</Label>
             <Input
+              id="email"
               autoComplete="email"
               name="email"
               onChange={handleChange("email", state, setState)}
@@ -67,8 +78,9 @@ const LoginForm = () => {
             ></Input>
           </Box>
           <Box px={2} my={2} width={1}>
-            <Label htmlFor="Password">Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
+              id="password"
               autoComplete="password"
               name="password"
               type="password"

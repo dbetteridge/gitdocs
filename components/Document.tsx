@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Doc from "@models/Doc";
+import useSWR from "swr";
 
 export default function Document() {
   const router = useRouter();
-  const { space, type, org, repo, project, path } = router.query;
+  const { space, type, org, repo, path } = router.query;
   const [doc, setDoc] = useState<Doc>();
   const fetchDoc = async (setDoc) => {
     const doc = await fetch(`/api/docs`, {
@@ -30,12 +31,9 @@ export default function Document() {
     setDoc(doc);
   };
 
-  useEffect(() => {
-    if (path) {
-      fetchDoc(setDoc);
-    }
-  }, [path]);
-  if (doc) {
+  useSWR("/api/docs", () => fetchDoc(setDoc));
+
+  if (doc && doc.html) {
     return (
       <span
         style={{

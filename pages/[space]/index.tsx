@@ -19,15 +19,14 @@ const Space = () => {
       justifyContent={"center"}
       alignItems={"flex-start"}
       my={4}
+      px={2}
       width={"100%"}
       height={"100%"}
       sx={(props) => ({
         backgroundColor: props.colors.background,
       })}
     >
-      <Flex width={1}>
-        <Repos />
-      </Flex>
+      <Repos />
     </Flex>
   );
 };

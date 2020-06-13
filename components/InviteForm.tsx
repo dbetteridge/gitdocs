@@ -65,13 +65,14 @@ const InviteForm = () => {
     <Box
       as="form"
       onSubmit={(e) => e.preventDefault()}
-      py={1}
+      mt={4}
       width={[3 / 4, 1 / 2]}
     >
       <Flex width={1} flexDirection={"column"}>
         <Heading>Add People to this space</Heading>
         <Box my={2} width={1}>
           <Input
+            id="emails"
             autoComplete="emails"
             name="emails"
             placeholder={"test@test.com"}

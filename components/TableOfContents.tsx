@@ -5,6 +5,7 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Repo from "@models/Repo";
+import useSWR from "swr";
 
 const TableOfContents = () => {
   const router = useRouter();
@@ -53,18 +54,17 @@ const TableOfContents = () => {
     setter(docs);
   };
 
-  useEffect(() => {
-    if (space) {
-      fetchRepo(setRepo, space, repo);
-      fetchDocs(setDocs);
-    }
-  }, [router.query]);
+  useSWR(`/api/repos/${space}`, () => fetchRepo(setRepo, space, repo));
+  useSWR(
+    () => (space ? JSON.stringify({ space, type, org, repo }) : null),
+    () => fetchDocs(setDocs)
+  );
 
   return (
     <Card width={1} sx={(props) => ({ backgroundColor: props.colors.muted })}>
       <Heading>Table of contents</Heading>
 
-      <ul style={{ marginBlockStart: 0, marginLeft: 0 }}>
+      <Flex flexDirection={"column"} px={3}>
         {docs &&
           docs
             .sort((a, b) => {
@@ -73,49 +73,63 @@ const TableOfContents = () => {
                 : -1;
             })
             .map((doc) => (
-              <li key={doc.id}>
-                <Flex
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  flexWrap={"wrap"}
-                  height={80}
-                  width={[0.75, 1]}
-                >
-                  <Link
-                    href={
-                      project
-                        ? `/${space}/${type}/${org}/${repo}/${encodeURIComponent(
+              <Flex
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                flexWrap={"wrap"}
+                height={80}
+                width={[0.75, 1]}
+              >
+                <a
+                  href={
+                    project
+                      ? `/${space}/${type}/${org}/${repo}/${encodeURIComponent(
+                          doc.path
+                        )}?project=${project}`
+                      : `/${space}/${type}/${org}/${repo}/${encodeURIComponent(
+                          doc.path
+                        )}`
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    project
+                      ? router.push(
+                          "/[space]/[type]/[org]/[repo]/[path]?project=[project]",
+                          `/${space}/${type}/${org}/${repo}/${encodeURIComponent(
                             doc.path
                           )}?project=${project}`
-                        : `/${space}/${type}/${org}/${repo}/${encodeURIComponent(
+                        )
+                      : router.push(
+                          "/[space]/[type]/[org]/[repo]/[path]",
+                          `/${space}/${type}/${org}/${repo}/${encodeURIComponent(
                             doc.path
                           )}`
-                    }
+                        );
+                  }}
+                >
+                  {doc.path}
+                </a>
+                {repoDB && (
+                  <a
+                    href={repoDB.url + "/blob/master/" + doc.path}
+                    target="__blank"
                   >
-                    <a>{doc.path}</a>
-                  </Link>
-                  {repoDB && (
-                    <a
-                      href={repoDB.url + "/blob/master/" + doc.path}
-                      target="__blank"
-                    >
-                      <Button height={30}>
-                        <Flex
-                          flexDirection={"row"}
-                          justifyContent={"space-between"}
-                          alignItems={"center"}
-                          height={"100%"}
-                        >
-                          <span>Source</span>
-                          <FontAwesomeIcon icon={faLink} />
-                        </Flex>
-                      </Button>
-                    </a>
-                  )}
-                </Flex>
-              </li>
+                    <Button height={30}>
+                      <Flex
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                        height={"100%"}
+                      >
+                        <span>Source</span>
+                        <FontAwesomeIcon icon={faLink} />
+                      </Flex>
+                    </Button>
+                  </a>
+                )}
+              </Flex>
             ))}
-      </ul>
+      </Flex>
     </Card>
   );
 };

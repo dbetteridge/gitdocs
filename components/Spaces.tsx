@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import NewSpaceForm from "./NewSpaceForm";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 
 const fetchSpaces = async (setter) => {
   const spaces = await fetch("/api/spaces", {
@@ -47,15 +48,15 @@ const Spaces = () => {
     dispatch({ type: "SELECT_SPACE", space: value });
   };
 
-  useEffect(() => {
-    fetchSpaces(setUserSpaces);
-  }, []);
+  useSWR("/api/spaces/", () => fetchSpaces(setUserSpaces));
 
   return (
     <Card
       width={[1, 3 / 4]}
       px={5}
-      sx={(props) => ({ backgroundColor: props.colors.muted })}
+      sx={(props) => ({
+        backgroundColor: props && props.colors && props.colors.muted,
+      })}
     >
       <Heading>Spaces</Heading>
       <Flex
@@ -74,7 +75,7 @@ const Spaces = () => {
                   selected={selectedSpace === space.id}
                   onClick={() => {
                     setSelected(space.id);
-                    router.push(`/${space.id}`);
+                    router.push("/[space]", `/${space.id}`);
                   }}
                 >
                   {space.id}
@@ -83,6 +84,7 @@ const Spaces = () => {
           )}
       </Flex>
       <Button
+        id="toggleNewSpaceForm"
         onClick={() => {
           dispatch({ type: "TOGGLE_NEW_SPACE_FORM" });
         }}
