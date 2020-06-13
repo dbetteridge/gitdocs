@@ -85,16 +85,12 @@ const NewRepoForm = () => {
   const [error, setError] = useState({ hasError: false, error: "" });
 
   return (
-    <Flex
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
+    <Flex flexDirection={"column"}>
       <Box
         as="form"
         onSubmit={(e) => e.preventDefault()}
         py={3}
-        width={[3 / 4, 1 / 4]}
+        width={[1, 1 / 2]}
         height={"50%"}
       >
         <Flex
@@ -103,13 +99,11 @@ const NewRepoForm = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Box px={2} my={2} width={1}>
-            <Label py={2} htmlFor="repo">
-              New Repo
-            </Label>
+          <Box my={2} width={1}>
             <Input
               autoComplete="repo"
               name="repo"
+              placeholder="Repository URL"
               onChange={handleChange("repo", repo, setRepo)}
               onSelect={handleChange("repo", repo, setRepo)}
               onFocus={handleChange("repo", repo, setRepo)}
@@ -117,7 +111,7 @@ const NewRepoForm = () => {
             ></Input>
           </Box>
           {error.hasError && <Box>{error.error}</Box>}
-          <Box px={2} my={2} width={1}>
+          <Box my={2} width={1}>
             <Button
               name="createRepo"
               variant="primary"
@@ -178,7 +172,7 @@ const NewRepoForm = () => {
                 });
               }}
             >
-              Create
+              Add
             </Button>
           </Box>
         </Flex>

@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const Search = () => {
   return (
-    <Flex width={[1 / 2, 1 / 4]}>
+    <Flex>
       <Flex px={3} flexDirection={"column"} justifyContent={"center"}>
         <FontAwesomeIcon icon={faSearch} />
       </Flex>
-      <Input />
+      {false && <Input />}
     </Flex>
   );
 };

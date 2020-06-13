@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Flex } from "rebass";
 import { useRouter } from "next/router";
 import Repos from "@components/Repos";
-import InviteForm from "@components/InviteForm";
 
 const Space = () => {
   const router = useRouter();
@@ -28,7 +27,6 @@ const Space = () => {
     >
       <Flex width={1}>
         <Repos />
-        <InviteForm />
       </Flex>
     </Flex>
   );

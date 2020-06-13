@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import NewRepoForm from "./NewRepoForm";
 import { useRouter } from "next/router";
+import InviteForm from "@components/InviteForm";
+import FullWidthLine from "./FullWidthLine";
 
 const fetchRepos = async (setter, space) => {
   const repos = await fetch(`/api/repos/${space}`, {
@@ -66,7 +68,6 @@ const Repos = () => {
   return (
     <Card
       width={[1, 1]}
-      px={5}
       mx={5}
       sx={(props) => ({ backgroundColor: props.colors.muted })}
     >
@@ -84,14 +85,19 @@ const Repos = () => {
           </Name>
         ))}
       </Flex>
-      <Button
-        onClick={() => {
-          dispatch({ type: "TOGGLE_NEW_REPO_FORM" });
-        }}
-      >
-        <FontAwesomeIcon icon={faPlus} />
-      </Button>
+      {!state.showNewRepoForm && (
+        <Button
+          onClick={() => {
+            dispatch({ type: "TOGGLE_NEW_REPO_FORM" });
+          }}
+        >
+          <FontAwesomeIcon icon={faPlus} />
+        </Button>
+      )}
+      {state.showNewRepoForm && <FullWidthLine />}
       {state.showNewRepoForm && <NewRepoForm />}
+      <FullWidthLine />
+      <InviteForm />
     </Card>
   );
 };

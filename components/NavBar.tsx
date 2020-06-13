@@ -31,7 +31,7 @@ const NavBar = () => {
       px={1}
       py={1}
     >
-      <Box>
+      <Box width={[1 / 2, 1 / 2]}>
         <Button
           onClick={() => {
             router.push("/");

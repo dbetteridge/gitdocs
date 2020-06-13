@@ -94,22 +94,24 @@ const TableOfContents = () => {
                   >
                     <a>{doc.path}</a>
                   </Link>
-                  <a
-                    href={repoDB.url + "/blob/master/" + doc.path}
-                    target="__blank"
-                  >
-                    <Button height={30}>
-                      <Flex
-                        flexDirection={"row"}
-                        justifyContent={"space-between"}
-                        alignItems={"center"}
-                        height={"100%"}
-                      >
-                        <span>Source</span>
-                        <FontAwesomeIcon icon={faLink} />
-                      </Flex>
-                    </Button>
-                  </a>
+                  {repoDB && (
+                    <a
+                      href={repoDB.url + "/blob/master/" + doc.path}
+                      target="__blank"
+                    >
+                      <Button height={30}>
+                        <Flex
+                          flexDirection={"row"}
+                          justifyContent={"space-between"}
+                          alignItems={"center"}
+                          height={"100%"}
+                        >
+                          <span>Source</span>
+                          <FontAwesomeIcon icon={faLink} />
+                        </Flex>
+                      </Button>
+                    </a>
+                  )}
                 </Flex>
               </li>
             ))}

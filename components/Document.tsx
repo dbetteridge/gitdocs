@@ -39,7 +39,6 @@ export default function Document() {
     return (
       <span
         style={{
-          border: "1px solid black",
           padding: "1rem",
         }}
         key={doc.path}
@@ -59,7 +58,6 @@ export default function Document() {
             box-sizing: border-box;
             min-width: 200px;
             max-width: 980px;
-            margin: 0 auto;
             padding: 45px;
           }
 

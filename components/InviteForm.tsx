@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Button } from "rebass";
-import { Label, Input } from "@rebass/forms";
+import { Box, Flex, Button, Heading } from "rebass";
+import { Input } from "@rebass/forms";
 import { useRouter, NextRouter } from "next/router";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -62,82 +62,75 @@ const InviteForm = () => {
     return <h3>Invited successfully</h3>;
   }
   return (
-    <Flex
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      width={"50%"}
+    <Box
+      as="form"
+      onSubmit={(e) => e.preventDefault()}
+      py={1}
+      width={[3 / 4, 1 / 2]}
     >
-      <Box
-        as="form"
-        onSubmit={(e) => e.preventDefault()}
-        py={3}
-        width={[3 / 4, 3 / 4]}
-      >
-        <Flex width={1} flexDirection={"column"}>
-          <Box px={2} my={2} width={1}>
-            <Label htmlFor="emails">Emails</Label>
-            <br />
-            <Input
-              autoComplete="emails"
-              name="emails"
-              value={state.emailInput}
-              onChange={(event, value) => {
-                if (value) {
-                  addEmail(value.trim());
-                }
-                if (event.target.value) {
-                  addEmail(event.target.value.trim());
-                }
-              }}
-            ></Input>
-            <Box>
-              {state.emails.map((email) => (
-                <Flex
-                  flexDirection={"row"}
-                  justifyContent={"center"}
-                  px={1}
-                  py={1}
-                  my={1}
-                  sx={{
-                    border: "1px solid grey",
-                    borderRadius: "5px",
+      <Flex width={1} flexDirection={"column"}>
+        <Heading>Add People to this space</Heading>
+        <Box my={2} width={1}>
+          <Input
+            autoComplete="emails"
+            name="emails"
+            placeholder={"test@test.com"}
+            value={state.emailInput}
+            onChange={(event, value) => {
+              if (value) {
+                addEmail(value.trim());
+              }
+              if (event.target.value) {
+                addEmail(event.target.value.trim());
+              }
+            }}
+          ></Input>
+          <Box>
+            {state.emails.map((email) => (
+              <Flex
+                flexDirection={"row"}
+                justifyContent={"center"}
+                px={1}
+                py={1}
+                my={1}
+                sx={{
+                  border: "1px solid grey",
+                  borderRadius: "5px",
+                }}
+              >
+                <Box width={0.9} sx={{ fontSize: "12px" }}>
+                  {email}
+                </Box>
+                <FontAwesomeIcon
+                  width={0.1}
+                  icon={faTimes}
+                  onClick={() => {
+                    setState({
+                      ...state,
+                      emails: state.emails.filter((item) => item !== email),
+                    });
                   }}
-                >
-                  <Box width={0.9} sx={{ fontSize: "12px" }}>
-                    {email}
-                  </Box>
-                  <FontAwesomeIcon
-                    width={0.1}
-                    icon={faTimes}
-                    onClick={() => {
-                      setState({
-                        ...state,
-                        emails: state.emails.filter((item) => item !== email),
-                      });
-                    }}
-                  />
-                </Flex>
-              ))}
-            </Box>
+                />
+              </Flex>
+            ))}
           </Box>
+        </Box>
 
-          {error.hasError && <Box>{error.error}</Box>}
-          <Box px={2} my={2} width={1}>
-            <Button
-              name="invite"
-              variant="primary"
-              mr={2}
-              onClick={() => {
-                inviteUser(state, router, { setState, setSuccess, setError });
-              }}
-            >
-              Invite
-            </Button>
-          </Box>
-        </Flex>
-      </Box>
-    </Flex>
+        {error.hasError && <Box>{error.error}</Box>}
+        <Box my={2} width={1}>
+          <Button
+            name="invite"
+            variant="primary"
+            mr={2}
+            onClick={() => {
+              inviteUser(state, router, { setState, setSuccess, setError });
+            }}
+          >
+            Invite
+          </Button>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 
