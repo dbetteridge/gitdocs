@@ -1,17 +1,27 @@
 import React, { useEffect } from "react";
-import { Flex, Button, Box } from "rebass";
+import { Flex, Box } from "rebass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
 import Search from "./Search";
+import { Button, Row, Col } from "antd";
+import styled from "@emotion/styled";
+
+const StyledRow = styled(Row)`
+  background-color: ${(props) => props.theme.colors.primary};
+  height: 50px;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+`;
 
 const NavBar = () => {
   const router = useRouter();
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const isLogin = router.pathname === "/login";
-  const isRegister = router.pathname === "/register";
+  const isLogin =
+    router.pathname === "/login" || router.pathname === "/register";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,23 +30,12 @@ const NavBar = () => {
     }
   });
   return (
-    <Flex
-      width={1}
-      height={"50px"}
-      sx={(props) => ({
-        color: props.colors.text,
-        backgroundColor: props.colors.gray,
-        justifyContent: "space-between",
-      })}
-      px={1}
-      py={1}
-    >
-      <Box width={[1 / 2, 1 / 2]}>
+    <StyledRow>
+      <Col xs={8}>
         <Button
           onClick={() => {
             router.push("/", "/");
           }}
-          mx={1}
         >
           <FontAwesomeIcon icon={faHome} />
         </Button>
@@ -47,32 +46,31 @@ const NavBar = () => {
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </Button>
-      </Box>
-      <Search />
-      <Flex>
-        {!isLoggedIn && !isLogin && (
-          <Link href={"/login"}>
-            <Button mx={2}>Login</Button>
-          </Link>
-        )}
-        {!isLoggedIn && !isRegister && (
-          <Link href={"/register"}>
-            <Button mx={2}>Register</Button>
-          </Link>
-        )}
-        {isLoggedIn && (
-          <Button
-            mx={2}
-            onClick={() => {
-              localStorage.removeItem("token");
-              window.location.reload();
-            }}
-          >
-            Logout
-          </Button>
-        )}
-      </Flex>
-    </Flex>
+      </Col>
+      <Col xs={8}>
+        <Search />
+      </Col>
+      <Col xs={8}>
+        <Flex justifyContent={"flex-end"}>
+          {!isLoggedIn && !isLogin && (
+            <Link href={"/login"}>
+              <Button>Login</Button>
+            </Link>
+          )}
+
+          {isLoggedIn && (
+            <Button
+              onClick={() => {
+                localStorage.removeItem("token");
+                window.location.reload();
+              }}
+            >
+              Logout
+            </Button>
+          )}
+        </Flex>
+      </Col>
+    </StyledRow>
   );
 };
 

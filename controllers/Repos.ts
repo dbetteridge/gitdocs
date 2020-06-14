@@ -19,7 +19,7 @@ export const getRepoBySpaceOrgType = async (space, org, type, repo) => {
     .first();
 };
 
-export const addRepo = async (url: string, owner: string) => {
+export const addRepo = async (url: string, branch: string, owner: string) => {
   let type, org, project, repo;
   let regexType = /(http(s)?:\/\/(dev.)?)(github|azure)\.com\/([^\/]{1,})(\/)?([^\/]{1,})(\/)?(_git)?(\/)?([^\/]{0,})/;
   const match = url.match(regexType);
@@ -45,6 +45,7 @@ export const addRepo = async (url: string, owner: string) => {
     org,
     project,
     repo,
+    branch,
   });
 
   // const newRepo = { url, owner, type, org, project, repo };

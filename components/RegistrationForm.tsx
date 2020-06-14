@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Flex, Button } from "rebass";
-import { Label, Input } from "@rebass/forms";
+import { Input } from "antd";
 import { RegistrationDetails, RegistrationResult } from "../interfaces/Login";
 import { handleChange } from "@utils/front-helpers";
 import { useRouter, NextRouter } from "next/router";
@@ -38,7 +38,7 @@ const registerUser = async (details): Promise<RegistrationResult> => {
 const handleRegistrationSuccess = (registrationResult, router) => {
   window.localStorage.setItem("token", registrationResult.token);
   window.localStorage.removeItem("invite");
-  router.push("/");
+  router.push("/createspace");
 };
 
 const handleRegistrationError = (
@@ -71,7 +71,6 @@ const RegistrationForm = () => {
   return (
     <Flex
       flexDirection={"column"}
-      justifyContent={"center"}
       alignItems={"center"}
       width={"100%"}
       height={"100%"}
@@ -80,8 +79,8 @@ const RegistrationForm = () => {
         as="form"
         onSubmit={(e) => e.preventDefault()}
         py={3}
-        width={[3 / 4, 1 / 4]}
         height={"50%"}
+        width={1}
       >
         <Flex
           width={1}
@@ -89,8 +88,7 @@ const RegistrationForm = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Box px={2} my={2} width={1}>
-            <Label htmlFor="name">Name</Label>
+          <Box px={1} my={2} width={1}>
             <Input
               id="name"
               autoComplete="name"
@@ -101,8 +99,7 @@ const RegistrationForm = () => {
               onMouseOver={handleChange("name", state, setState)}
             ></Input>
           </Box>
-          <Box px={2} my={2} width={1}>
-            <Label htmlFor="email">Email</Label>
+          <Box px={1} my={2} width={1}>
             <Input
               id="email"
               autoComplete="email"
@@ -113,8 +110,7 @@ const RegistrationForm = () => {
               onMouseOver={handleChange("email", state, setState)}
             ></Input>
           </Box>
-          <Box px={2} my={2} width={1}>
-            <Label htmlFor="password">Password</Label>
+          <Box px={1} my={2} width={1}>
             <Input
               id="password"
               type="password"
@@ -127,7 +123,7 @@ const RegistrationForm = () => {
             ></Input>
           </Box>
           {error.hasError && <Box>{error.error}</Box>}
-          <Box px={2} my={2} width={1}>
+          <Box px={1} my={2} width={1}>
             <Button
               name="register"
               variant="primary"

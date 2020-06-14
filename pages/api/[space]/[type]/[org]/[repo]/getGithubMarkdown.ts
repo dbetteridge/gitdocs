@@ -32,7 +32,7 @@ export default async (req, res) => {
     } = await getTokenByRepoSpace(repoDB, space);
 
     const files = await client(
-      `https://api.github.com/repos/${org}/${repo}/git/trees/master?recursive=1`,
+      `https://api.github.com/repos/${org}/${repo}/git/trees/${repoDB.branch}?recursive=1`,
       github_token,
       true,
       token_type === "bearer"

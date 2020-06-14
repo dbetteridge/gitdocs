@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Card, Heading, Button, Flex } from "rebass";
+import React, { useEffect, useContext } from "react";
+import { Card, Heading, Flex } from "rebass";
 import { store } from "../contexts/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +7,9 @@ import NewRepoForm from "./NewRepoForm";
 import { useRouter } from "next/router";
 import InviteForm from "@components/InviteForm";
 import FullWidthLine from "./FullWidthLine";
-import useSWR from "swr";
+import { Button } from "antd";
+import { Row, Col } from "antd/lib/grid";
+import styled from "@emotion/styled";
 
 const fetchRepos = async (setter, space) => {
   if (!space) {
@@ -20,6 +22,9 @@ const fetchRepos = async (setter, space) => {
     },
   })
     .then((d) => {
+      if (!d.ok) {
+        window.location.href = "/login";
+      }
       return d;
     })
     .then((d) => d.json());
@@ -27,16 +32,10 @@ const fetchRepos = async (setter, space) => {
   return repos;
 };
 
-const Name = (props) => (
-  <Button
-    {...props}
-    px={3}
-    py={3}
-    my={3}
-    sx={{ marginRight: "1rem" }}
-    variant={props.selected ? "primary" : "secondary"}
-  />
-);
+const Name = styled(Button)`
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+`;
 
 const Repos = () => {
   const router = useRouter();
@@ -64,52 +63,62 @@ const Repos = () => {
     }
   };
   useEffect(() => {
-    dispatch({ type: "SELECT_SPACE", space: router.query.space });
+    if (router.query.space) {
+      dispatch({ type: "SELECT_SPACE", space: router.query.space });
+      fetchRepos(setUserRepos, router.query.space);
+    }
   }, [router.query]);
 
-  const { data, error } = useSWR(state.selectedSpace, (space) =>
-    fetchRepos(setUserRepos, space)
-  );
-  if (error) {
-    return null;
-  }
   return (
-    <Card
-      width={[1, 1]}
-      mx={2}
-      px={4}
-      py={3}
-      sx={(props) => ({ backgroundColor: props.colors.muted })}
-    >
-      <Heading>Repos</Heading>
-      <Flex my={2} flexDirection={"row"} alignItems={"center"} flexWrap="wrap">
-        {repos.map((repo) => (
-          <Name
-            key={repo.id}
-            selected={selectedRepo === repo.url}
+    <Row>
+      <Col xs={2}></Col>
+      <Col xs={20}>
+        <Card
+          width={[1, 1]}
+          px={4}
+          py={3}
+          my={4}
+          sx={(props) => ({
+            backgroundColor: props && props.colors && props.colors.muted,
+          })}
+        >
+          <Heading>Repos</Heading>
+          <Flex
+            my={2}
+            flexDirection={"row"}
+            alignItems={"center"}
+            flexWrap="wrap"
+          >
+            {repos.map((repo) => (
+              <Name
+                type={selectedRepo === repo.url ? "primary" : "default"}
+                key={repo.id}
+                onClick={() => {
+                  setSelected(repo.url);
+                }}
+              >
+                {repo.repo}
+              </Name>
+            ))}
+          </Flex>
+
+          <Button
+            type={"primary"}
             onClick={() => {
-              setSelected(repo.url);
+              dispatch({ type: "TOGGLE_NEW_REPO_FORM" });
             }}
           >
-            {repo.repo}
-          </Name>
-        ))}
-      </Flex>
+            <FontAwesomeIcon icon={state.showNewRepoForm ? faMinus : faPlus} />
+          </Button>
 
-      <Button
-        mb={4}
-        onClick={() => {
-          dispatch({ type: "TOGGLE_NEW_REPO_FORM" });
-        }}
-      >
-        <FontAwesomeIcon icon={state.showNewRepoForm ? faMinus : faPlus} />
-      </Button>
-
-      {state.showNewRepoForm && <FullWidthLine />}
-      {state.showNewRepoForm && <NewRepoForm />}
-      <FullWidthLine />
-      <InviteForm />
-    </Card>
+          {state.showNewRepoForm && <FullWidthLine />}
+          {state.showNewRepoForm && <NewRepoForm />}
+          <FullWidthLine />
+          <InviteForm />
+        </Card>
+      </Col>
+      <Col xs={2}></Col>
+    </Row>
   );
 };
 

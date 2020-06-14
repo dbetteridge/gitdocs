@@ -12,6 +12,7 @@ class Repo extends Model {
   project: string | null;
   repo: string;
   token: number;
+  branch: string;
 
   static tableName = "repos";
   static idColumn = "id";

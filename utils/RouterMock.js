@@ -29,3 +29,4 @@ RouterMock.propTypes = {
 };
 
 export default RouterMock;
+export { Router };

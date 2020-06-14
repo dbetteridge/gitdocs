@@ -1,12 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Box, Flex, Button } from "rebass";
-import { Label, Input } from "@rebass/forms";
+import { Box, Flex } from "rebass";
+import { Input, Button } from "antd";
 import { handleChange, timedError } from "@utils/front-helpers";
 import { store } from "@contexts/store";
 import jwt from "jsonwebtoken";
 
 import getConfig from "next/config";
 import { useRouter } from "next/router";
+import { faCodeBranch, faLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const { publicRuntimeConfig } = getConfig();
 
 const createRepo = async (
@@ -57,7 +59,7 @@ const fetchToken = async (repo, spaceID) => {
 
 const NewRepoForm = () => {
   const router = useRouter();
-  const [repo, setRepo] = useState({ repo: "" });
+  const [repo, setRepo] = useState({ repo: "", branch: "master" });
   const globalState: any = useContext(store);
   const { dispatch, state } = globalState;
   const { selectedSpace } = state;
@@ -99,6 +101,7 @@ const NewRepoForm = () => {
               autoComplete="repo"
               name="repo"
               placeholder="Repository URL"
+              addonAfter={<FontAwesomeIcon icon={faLink} />}
               onChange={handleChange("repo", repo, setRepo)}
               onSelect={handleChange("repo", repo, setRepo)}
               onFocus={handleChange("repo", repo, setRepo)}
@@ -107,10 +110,21 @@ const NewRepoForm = () => {
           </Box>
           {error.hasError && <Box width={1}>{error.error}</Box>}
           <Box my={2} width={1}>
+            <Input
+              autoComplete="branch"
+              name="branch"
+              placeholder="Repository Branch"
+              addonAfter={<FontAwesomeIcon icon={faCodeBranch} />}
+              onChange={handleChange("branch", repo, setRepo)}
+              onSelect={handleChange("branch", repo, setRepo)}
+              onFocus={handleChange("branch", repo, setRepo)}
+              onMouseOver={handleChange("branch", repo, setRepo)}
+            ></Input>
+          </Box>
+          <Box my={2} width={1}>
             <Button
               name="createRepo"
-              variant="primary"
-              mr={2}
+              type={"primary"}
               onClick={() => {
                 if (repo.repo.length === 0) {
                   timedError("Repository URL must be entered", setError, null);

@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Box, Flex, Button } from "rebass";
-import { Label, Input } from "@rebass/forms";
+import Input from "antd/lib/input/Input";
 import { handleChange } from "@utils/front-helpers";
 import { store } from "@contexts/store";
+import { useRouter } from "next/router";
 
 const createSpace = async (
   details,
-  { setState, setSpace, toggleForm, setError }
+  router,
+  { setState, setSpace, setError }
 ) => {
   const token = window.localStorage.getItem("token");
   const space = await fetch("/api/spaces", {
@@ -25,7 +27,7 @@ const createSpace = async (
   if (!space.error) {
     setState({ id: details.space, active: true });
     setSpace({ space: "" });
-    toggleForm();
+    router.push("/[space]", `/${details.space}`);
   } else {
     setError({ hasError: true, error: space.error });
     setTimeout(() => {
@@ -36,6 +38,7 @@ const createSpace = async (
 };
 
 const NewSpaceForm = () => {
+  const router = useRouter();
   const [space, setSpace] = useState({ space: "" });
   const globalState: any = useContext(store);
   const { dispatch } = globalState;
@@ -68,16 +71,15 @@ const NewSpaceForm = () => {
           alignItems={"center"}
         >
           <Box px={2} my={2} width={1}>
-            <Label py={2} htmlFor="space">
-              New Space
-            </Label>
             <Input
+              id="space"
               autoComplete="space"
               name="space"
+              addonBefore={"gitdocs.page/"}
               onChange={handleChange("space", space, setSpace)}
-              onSelect={handleChange("space", space, setSpace)}
-              onFocus={handleChange("space", space, setSpace)}
-              onMouseOver={handleChange("space", space, setSpace)}
+              onSelect={handleChange("space", space, setState)}
+              onFocus={handleChange("space", space, setState)}
+              onMouseOver={handleChange("space", space, setState)}
             ></Input>
           </Box>
           {error.hasError && <Box>{error.error}</Box>}
@@ -87,10 +89,9 @@ const NewSpaceForm = () => {
               variant="primary"
               mr={2}
               onClick={() => {
-                createSpace(space, {
+                createSpace(space, router, {
                   setState,
                   setSpace,
-                  toggleForm,
                   setError,
                 });
               }}

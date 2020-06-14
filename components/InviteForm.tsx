@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Button, Heading } from "rebass";
-import { Input } from "@rebass/forms";
+import { Box, Flex, Heading } from "rebass";
 import { useRouter, NextRouter } from "next/router";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Button, Input } from "antd";
 
 const inviteUser = async (
   details: { emails?: string[]; space?: string | string[] },
@@ -41,7 +41,7 @@ const InviteForm = () => {
   }>({
     emailInput: "",
     emails: [],
-    space: router.query.space,
+    space: router.query && router.query.space,
   });
 
   const [success, setSuccess] = useState(false);
@@ -56,8 +56,10 @@ const InviteForm = () => {
   }, 300);
 
   useEffect(() => {
-    setState({ ...state, space: router.query.space });
-  }, [router.query.space]);
+    if (router.query && router.query.space) {
+      setState({ ...state, space: router.query.space });
+    }
+  }, [router.query]);
   if (success) {
     return <h3>Invited successfully</h3>;
   }
@@ -77,10 +79,7 @@ const InviteForm = () => {
             name="emails"
             placeholder={"test@test.com"}
             value={state.emailInput}
-            onChange={(event, value) => {
-              if (value) {
-                addEmail(value.trim());
-              }
+            onChange={(event) => {
               if (event.target.value) {
                 addEmail(event.target.value.trim());
               }
@@ -121,8 +120,7 @@ const InviteForm = () => {
         <Box my={2} width={1}>
           <Button
             name="invite"
-            variant="primary"
-            mr={2}
+            type="primary"
             onClick={() => {
               inviteUser(state, router, { setState, setSuccess, setError });
             }}

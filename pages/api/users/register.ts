@@ -1,5 +1,5 @@
 import { register } from "@controllers/Users";
-import jwt from "jsonwebtoken";
+import { createValidJWT } from "@utils/front-helpers";
 export default async (req, res) => {
   const { body } = req;
   const registrationDetails = JSON.parse(body);
@@ -7,7 +7,7 @@ export default async (req, res) => {
 
   if (result.rows) {
     const user = result.rows[0];
-    const token = jwt.sign(user.register, process.env.SECRET);
+    const token = createValidJWT(user.register, process.env.SECRET);
     if (result.invite) {
       res.json({ token, invite: result.invite });
     } else {

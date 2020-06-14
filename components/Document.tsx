@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Doc from "@models/Doc";
-import useSWR from "swr";
+
+import styled from "@emotion/styled";
+
+const AlignedH3 = styled.h3`
+  margin-left: 45px;
+  @media (max-width: 767px) {
+    margin-left: 15px;
+  }
+`;
 
 export default function Document() {
   const router = useRouter();
@@ -31,18 +39,23 @@ export default function Document() {
     setDoc(doc);
   };
 
-  useSWR("/api/docs", () => fetchDoc(setDoc));
+  useEffect(() => {
+    fetchDoc(setDoc);
+  }, []);
 
   if (doc && doc.html) {
     return (
-      <span
+      <div
         style={{
           padding: "1rem",
+          height: "100%",
+          width: "100%",
         }}
         key={doc.path}
       >
         {/** TODO: Link to single file view page  */}
-        <h3>{doc.name}</h3>
+
+        <AlignedH3>{doc.name}</AlignedH3>
         <article
           dangerouslySetInnerHTML={{ __html: doc.html }}
           className="markdown-body"
@@ -65,7 +78,7 @@ export default function Document() {
             }
           }
         `}</style>
-      </span>
+      </div>
     );
   } else {
     return null;

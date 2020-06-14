@@ -15,11 +15,11 @@ export default async (req, res) => {
   }
 
   if (req.method === "POST") {
-    const { repo } = JSON.parse(req.body);
+    const { repo, branch } = JSON.parse(req.body);
     const { space } = req.query;
     await isAllowed(req, space, res);
 
-    const newRepo = await addRepo(repo, space.id);
+    const newRepo = await addRepo(repo, branch, space);
     res.json(newRepo);
   }
 };
