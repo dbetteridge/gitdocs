@@ -6,7 +6,7 @@ services:
       - db
     environment:
       - PORT=3000
-      - PG_HOSTNAME=db
+      - PG_HOSTNAME=bouncer
       - PG_DB=gitdocs_dev
       - PG_USERNAME=postgres
       - PG_PASSWORD=devuser
@@ -18,8 +18,17 @@ services:
       - .:/app/
   db:
     image: postgres:12
-    ports:
-      - "5433:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=devuser
+  bouncer:
+    depends_on:
+      - db
+    image: edoburu/pgbouncer
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=devuser
+      - DB_HOST=db
+      - DB_NAME=gitdocs_dev
+    ports:
+      - 5433:5432
