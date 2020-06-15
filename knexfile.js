@@ -11,8 +11,8 @@ module.exports = {
       port: process.env.PG_PORT,
     },
     pool: {
-      min: 1,
-      max: 5,
+      min: 2,
+      max: 20,
     },
     migrations: {
       tableName: "knex_migrations",
