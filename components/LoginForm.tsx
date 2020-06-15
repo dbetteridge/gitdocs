@@ -27,7 +27,7 @@ const login = async (
 
   if (token.length) {
     window.localStorage.setItem("token", token);
-    router.push("/");
+    router.push("/app", "/app");
   } else {
     setError({ hasError: true, error: "Email or Password is incorrect" });
     setTimeout(() => {

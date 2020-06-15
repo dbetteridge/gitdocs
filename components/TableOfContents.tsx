@@ -78,9 +78,11 @@ const TableOfContents = () => {
   }, [state.sortedDocs]);
 
   const sortDocs = () => {
-    const sorted = docs.sort((a, b) => {
-      return a.path.split("/").length > b.path.split("/").length ? 1 : -1;
-    });
+    const sorted = docs
+      .sort((a, b) => {
+        return a.path.split("/").length > b.path.split("/").length ? 1 : -1;
+      })
+      .sort((a, b) => (a.path.split("/")[0] > b.path.split("/")[0] ? 1 : -1));
 
     if (!state.sortedDocs.length) {
       setState({ ...state, sortedDocs: sorted });

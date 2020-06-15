@@ -17,7 +17,11 @@ const fetchSpaces = async (router) => {
       }
     })
     .then((d) => d.json());
-  router.push("/[space]", `/${spaces[0].id}`);
+  if (spaces.length > 0) {
+    router.push("/[space]", `/${spaces[0].id}`);
+  } else {
+    router.push("/createspace", "/createspace");
+  }
 };
 
 const StyledCard = styled(Card)`

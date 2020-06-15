@@ -7,7 +7,7 @@ export default () => {
     if (invite) {
       window.localStorage.setItem("invite", invite);
     }
-    router.push("/register");
+    router.push("/register", "/register");
   });
   return null;
 };

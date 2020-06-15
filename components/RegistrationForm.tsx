@@ -38,7 +38,7 @@ const registerUser = async (details): Promise<RegistrationResult> => {
 const handleRegistrationSuccess = (registrationResult, router) => {
   window.localStorage.setItem("token", registrationResult.token);
   window.localStorage.removeItem("invite");
-  router.push("/createspace");
+  router.push("/createspace", "/createspace");
 };
 
 const handleRegistrationError = (

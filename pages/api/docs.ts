@@ -1,5 +1,9 @@
 import { getDocsBySpaceRepo, getDocByPath } from "@controllers/Docs";
-import { getRepoBySpaceOrgType } from "@controllers/Repos";
+import {
+  getRepoBySpaceOrgType,
+  addAzureDocs,
+  addGithubDocs,
+} from "@controllers/Repos";
 import { isAllowed } from "@utils/helpers";
 
 export default async (req, res) => {
@@ -21,7 +25,16 @@ export default async (req, res) => {
         );
         res.json(doc);
       } else {
-        const docs = await getDocsBySpaceRepo(space, repoDB.id);
+        let docs = await getDocsBySpaceRepo(space, repoDB.id);
+        if (docs.length === 0) {
+          if (repoDB.type === "github") {
+            await addGithubDocs(repoDB, space);
+          } else {
+            await addAzureDocs(repoDB, space);
+          }
+          docs = await getDocsBySpaceRepo(space, repoDB.id);
+        }
+
         res.json(docs);
       }
     } else {

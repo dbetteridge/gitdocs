@@ -4,6 +4,7 @@ import Input from "antd/lib/input/Input";
 import { handleChange } from "@utils/front-helpers";
 import { store } from "@contexts/store";
 import { useRouter } from "next/router";
+import Text from "antd/lib/typography/Text";
 
 const createSpace = async (
   details,
@@ -17,9 +18,6 @@ const createSpace = async (
     headers: { Authorization: token },
   })
     .then((d) => {
-      if (!d.ok) {
-        window.location.replace("/login");
-      }
       return d;
     })
     .then((response: Response) => response.json());
@@ -36,6 +34,11 @@ const createSpace = async (
     }, 1000);
   }
 };
+
+const bannedNames = [
+  RegExp("^(app|createspace|index|login)$"),
+  RegExp(/\[.+\]/),
+];
 
 const NewSpaceForm = () => {
   const router = useRouter();
@@ -70,7 +73,11 @@ const NewSpaceForm = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Box px={2} my={2} width={1}>
+          <Flex my={2} width={1} flexDirection={"column"}>
+            <Text>Invalid names include</Text>
+            <Text>app, createspace, login, index, [strings]</Text>
+          </Flex>
+          <Box my={2} width={1}>
             <Input
               id="space"
               autoComplete="space"
@@ -83,17 +90,24 @@ const NewSpaceForm = () => {
             ></Input>
           </Box>
           {error.hasError && <Box>{error.error}</Box>}
-          <Box px={2} my={2} width={1}>
+          <Box my={2} width={1}>
             <Button
               name="createSpace"
               variant="primary"
               mr={2}
               onClick={() => {
-                createSpace(space, router, {
-                  setState,
-                  setSpace,
-                  setError,
-                });
+                if (bannedNames.some((reg) => reg.test(space.space))) {
+                  setError({
+                    hasError: true,
+                    error: `${space.space} is not a valid name`,
+                  });
+                } else {
+                  createSpace(space, router, {
+                    setState,
+                    setSpace,
+                    setError,
+                  });
+                }
               }}
             >
               Create

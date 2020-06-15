@@ -144,13 +144,9 @@ const NewRepoForm = () => {
 
                   if (token.access_token) {
                     if (repo.type === "azure") {
-                      router.push(
-                        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}/${repo.project}`
-                      );
+                      router.push("/[space]", `/${selectedSpace}`);
                     } else {
-                      router.push(
-                        `/${selectedSpace}/${repo.type}/${repo.org}/${repo.repo}`
-                      );
+                      router.push("/[space]", `/${selectedSpace}`);
                     }
                   } else {
                     if (repo.type === "azure") {

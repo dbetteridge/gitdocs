@@ -31,7 +31,10 @@ export default function Document() {
     })
       .then((d) => {
         if (!d.ok) {
-          router.push("/login");
+          router.push(
+            "/[space]/[type]/[org]/[repo]",
+            `/${space}/${type}/${org}/${repo}`
+          );
         }
         return d;
       })
@@ -40,8 +43,8 @@ export default function Document() {
   };
 
   useEffect(() => {
-    fetchDoc(setDoc);
-  }, []);
+    if (space && type && org && repo && path) fetchDoc(setDoc);
+  }, [space, type, org, repo, path]);
 
   if (doc && doc.html) {
     return (
