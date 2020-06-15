@@ -1,6 +1,7 @@
 import axios from "axios";
 import { addToken } from "@controllers/Tokens";
 import { OAuthTokenResponse } from "@interfaces/Login";
+import { addGithubDocs, getRepoBySpaceOrgType } from "@controllers/Repos";
 
 export default async (req, res) => {
   const { code, state } = req.query;
@@ -30,11 +31,12 @@ export default async (req, res) => {
   });
 
   const { repo, org, type, space, owner, scopes } = JSON.parse(state);
-  console.log(state, result);
-  addToken(result, type, org, space, owner, scopes);
+  await addToken(result, type, org, space, owner, scopes);
+  const repoDB = await getRepoBySpaceOrgType(space, org, type, repo);
+  await addGithubDocs(repoDB, space);
 
   res.writeHead(302, {
-    Location: `/${space}/${type}/${org}/${repo}`,
+    Location: `/${space}`,
   });
   res.end();
 };

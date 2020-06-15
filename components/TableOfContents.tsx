@@ -114,7 +114,7 @@ const TableOfContents = () => {
         </a>
       ),
 
-      sourceLink: (
+      sourceLink: repoDB && repoDB.url && (
         <a
           href={repoDB.url + "/blob/master/" + doc.path}
           target={"__blank"}

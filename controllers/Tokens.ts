@@ -11,7 +11,7 @@ export const getToken = async (id) => {
   return await Token.query().findById(id);
 };
 
-export const getTokenByRepoSpace = async (repo, spaceID) => {
+export const getTokenByRepoSpace = async (repo: Repo, spaceID: string) => {
   const token = await Token.query()
     .where({
       type: repo.type,

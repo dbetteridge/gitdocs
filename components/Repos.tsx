@@ -97,7 +97,7 @@ const Repos = () => {
                   setSelected(repo.url);
                 }}
               >
-                {repo.repo}
+                {repo.org}/{repo.repo}
               </Name>
             ))}
           </Flex>

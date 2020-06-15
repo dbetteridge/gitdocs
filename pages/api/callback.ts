@@ -1,6 +1,7 @@
 import axios from "axios";
 import { addToken } from "@controllers/Tokens";
 import { OAuthTokenResponse } from "@interfaces/Login";
+import { addAzureDocs, getRepoBySpaceOrgType } from "@controllers/Repos";
 
 export default async (req, res) => {
   const { code, state } = req.query;
@@ -20,10 +21,12 @@ export default async (req, res) => {
   const expiry_time: number = +result.expires_in + time / 1000;
   result.expiry_time = Math.trunc(expiry_time);
   const { project, repo, org, type, space, owner, scopes } = JSON.parse(state);
-  addToken(result, type, org, space, owner, scopes);
+  await addToken(result, type, org, space, owner, scopes);
+  const repoDB = await getRepoBySpaceOrgType(space, org, type, repo);
+  await addAzureDocs(repoDB, space);
 
   res.writeHead(302, {
-    Location: `/${space}/${type}/${org}/${repo}?project=${project}`,
+    Location: `/${space}`,
   });
   res.end();
 };
