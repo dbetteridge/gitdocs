@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { Spin, Row, Col, Card } from "antd";
 import styled from "@emotion/styled";
+import { useEffect } from "react";
+import StyledCard from "./StyledCard";
 
 const fetchSpaces = async (router) => {
   const spaces = await fetch("/api/spaces", {
@@ -24,15 +26,6 @@ const fetchSpaces = async (router) => {
   }
 };
 
-const StyledCard = styled(Card)`
-  background-color: ${(props) => props.theme.colors.muted};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
-
 const StyledRow = styled(Row)`
   height: 330px;
   margin-top: 2rem;
@@ -41,7 +34,10 @@ const StyledRow = styled(Row)`
 const Spaces = () => {
   const router = useRouter();
 
-  fetchSpaces(router);
+  useEffect(() => {
+    fetchSpaces(router);
+  }, []);
+
   return (
     <StyledRow>
       <Col xs={2}></Col>

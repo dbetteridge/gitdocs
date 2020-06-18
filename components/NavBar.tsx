@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { Flex, Box } from "rebass";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { useState } from "react";
-import Search from "./Search";
-import { Button, Row, Col } from "antd";
 import styled from "@emotion/styled";
+import { faArrowLeft, faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Col, Row } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { Flex } from "rebass";
+import Search from "./Search";
+import ThemeI from "types/Theme";
 
-const StyledRow = styled(Row)`
-  background-color: ${(props) => props.theme.colors.primary};
+const StyledRow: any = styled(Row)<ThemeI>`
+  background-color: ${({ theme: { colors } }) => colors.primary};
   height: 50px;
   align-items: center;
   padding-left: 1rem;
@@ -39,13 +39,24 @@ const NavBar = () => {
         >
           <FontAwesomeIcon icon={faHome} />
         </Button>
-        <Button
-          onClick={() => {
-            router.back();
-          }}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </Button>
+        {router.pathname !== "/" && (
+          <Button
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Button>
+        )}
+        {router.pathname === "/" && (
+          <Button
+            onClick={() => {
+              router.push("/app", "/app");
+            }}
+          >
+            App
+          </Button>
+        )}
       </Col>
       <Col xs={8}>
         <Search />
