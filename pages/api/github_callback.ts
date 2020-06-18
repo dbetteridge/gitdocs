@@ -38,7 +38,7 @@ export default async (req, res) => {
   await addGithubDocs(repoDB, space);
 
   res.writeHead(302, {
-    Location: `/${space}`,
+    Location: `/close`,
   });
   res.end();
 };

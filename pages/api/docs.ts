@@ -5,6 +5,7 @@ import {
   addGithubDocs,
 } from "@controllers/Repos";
 import { isAllowed } from "@utils/helpers";
+import { getTokenByRepoSpace } from "@controllers/Tokens";
 
 export default async (req, res) => {
   if (req.method === "POST") {
@@ -26,7 +27,13 @@ export default async (req, res) => {
         res.json(doc);
       } else {
         let docs = await getDocsBySpaceRepo(space, repoDB.id);
+        let token = await getTokenByRepoSpace(repoDB, space);
         if (docs.length === 0) {
+          console.log(token);
+          if (!token.id) {
+            res.status(400).json({ error: "No docs and no valid token" });
+            return;
+          }
           if (repoDB.type === "github") {
             await addGithubDocs(repoDB, space);
           } else {

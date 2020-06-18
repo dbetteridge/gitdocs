@@ -26,7 +26,7 @@ export default async (req, res) => {
   await addAzureDocs(repoDB, space);
 
   res.writeHead(302, {
-    Location: `/${space}`,
+    Location: `/close`,
   });
   res.end();
 };

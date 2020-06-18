@@ -152,30 +152,38 @@ const NewRepoForm = () => {
                     if (repo.type === "azure") {
                       // Go get an azure token
                       // Redirects /api/callback
-                      window.location.href = `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
-                        {
-                          project: repo.project,
-                          repo: repo.repo,
-                          type: repo.type,
-                          org: repo.org,
-                          space: selectedSpace,
-                          owner: owner,
-                          scopes: "vso.code",
-                        }
-                      )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`;
+                      window.open(
+                        `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
+                          {
+                            project: repo.project,
+                            repo: repo.repo,
+                            type: repo.type,
+                            org: repo.org,
+                            space: selectedSpace,
+                            owner: owner,
+                            scopes: "vso.code",
+                          }
+                        )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`,
+                        "_target",
+                        "width=400,height=600"
+                      );
                     } else {
                       // Go get a github token
                       // Redirects to /api/github_callback
-                      window.location.href = `${githubURL}?client_id=${clientID}&state=${JSON.stringify(
-                        {
-                          repo: repo.repo,
-                          type: repo.type,
-                          org: repo.org,
-                          space: selectedSpace,
-                          owner: owner,
-                          scopes: "repo",
-                        }
-                      )}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`;
+                      window.open(
+                        `${githubURL}?client_id=${clientID}&state=${JSON.stringify(
+                          {
+                            repo: repo.repo,
+                            type: repo.type,
+                            org: repo.org,
+                            space: selectedSpace,
+                            owner: owner,
+                            scopes: "repo",
+                          }
+                        )}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`,
+                        "_target",
+                        "width=400,height=600"
+                      );
                     }
                   }
                 });

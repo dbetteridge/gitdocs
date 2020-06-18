@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faCodeBranch } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Repo from "@models/Repo";
-import { Table } from "antd";
+import { Table, Spin } from "antd";
+
+import getConfig from "next/config";
+import { getUserDetails } from "@utils/front-helpers";
+const { publicRuntimeConfig } = getConfig();
 
 const TableOfContents = () => {
   const router = useRouter();
@@ -27,13 +31,16 @@ const TableOfContents = () => {
         return d;
       })
       .then((d) => d.json());
-    if (repos) {
+    if (repos && repos.length) {
       const repoDB: Repo = repos.filter((srepo) => srepo.repo === repo)[0];
       setter(repoDB);
     }
   };
 
   const fetchDocs = async (setter) => {
+    const { githubURL, authURL, appID, scopes, clientID } = publicRuntimeConfig;
+    const user = getUserDetails();
+    console.log("USER", user);
     const docs = await fetch(`/api/docs`, {
       method: "POST",
       headers: {
@@ -49,6 +56,42 @@ const TableOfContents = () => {
       .then((d) => {
         if (!d.ok) {
           // Do something to show an auth error here
+          if (d.status === 400) {
+            if (type === "azure") {
+              // Go get an azure token
+              // Redirects /api/callback
+              window.open(
+                `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
+                  {
+                    project: project,
+                    repo: repo,
+                    type: type,
+                    org: org,
+                    space: space,
+                    owner: user.email,
+                    scopes: "vso.code",
+                  }
+                )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`,
+                "_target",
+                "width=400,height=600"
+              );
+            } else {
+              // Go get a github token
+              // Redirects to /api/github_callback
+              window.open(
+                `${githubURL}?client_id=${clientID}&state=${JSON.stringify({
+                  repo: repo,
+                  type: type,
+                  org: org,
+                  space: space,
+                  owner: user.email,
+                  scopes: "repo",
+                })}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`,
+                "_target",
+                "width=400,height=600"
+              );
+            }
+          }
         }
         return d;
       })
@@ -66,7 +109,7 @@ const TableOfContents = () => {
   }, [space, type, org, repo, project]);
 
   useEffect(() => {
-    if (docs) {
+    if (docs && docs.length > 0) {
       sortDocs();
     }
   }, [docs]);
@@ -136,6 +179,12 @@ const TableOfContents = () => {
     { title: "Source Link", dataIndex: "sourceLink", key: "sourceLink" },
   ];
 
+  if (!state.docLinks) {
+    <Card width={1} sx={(props) => ({ backgroundColor: props.colors.muted })}>
+      <Spin />
+    </Card>;
+  }
+
   return (
     <Card width={1} sx={(props) => ({ backgroundColor: props.colors.muted })}>
       <Heading>Table of contents</Heading>
@@ -143,6 +192,7 @@ const TableOfContents = () => {
       {docs && docs.length > 0 && (
         <Table columns={columns} dataSource={state.docLinks} />
       )}
+      {!docs || (!docs.length && <Spin />)}
     </Card>
   );
 };
