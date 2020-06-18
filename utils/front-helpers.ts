@@ -30,6 +30,19 @@ export const checkLoginStatus = () => {
   }
 };
 
+export const getUserDetails = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return false;
+  }
+  try {
+    const user = jwt.decode(token);
+    return user;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 export const createExpiredJWT = () => {
   return jwt.sign(
     { email: "blah", exp: Math.floor(Date.now() / 1000) - 500 },
