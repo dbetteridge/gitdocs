@@ -1,16 +1,18 @@
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
+  await knex.migrate.latest();
   await knex("user_space").del();
+
+  await knex("docs").del();
+  await knex("repos").del();
+  await knex("tokens").del();
+  await knex("spaces").del();
   return knex("users")
     .del()
     .then(function () {
       // Inserts seed entries
-      return knex("users").insert([
-        {
-          name: "Daniel Betteridge",
-          email: "danielrbetteridge@gmail.com",
-          hash: "$2a$10$VCt1xcTtAng8GFpkp0Lii./9JVmV0Sln2A9onFRvN4rJixZmj2zGi",
-        },
-      ]);
+      return knex.raw(
+        `SELECT register('Daniel Betteridge','danielrbetteridge@gmail.com','testpassword');`
+      );
     });
 };
