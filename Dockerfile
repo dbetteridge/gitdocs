@@ -5,6 +5,7 @@ COPY ./package*.json ./
 RUN npm ci
 
 EXPOSE 3000
-CMD [ "npm", "run", "dev" ]
+RUN npm run build
+CMD [ "npm", "run", "start" ]
 
 COPY . .

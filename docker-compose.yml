@@ -16,11 +16,11 @@ services:
       - "3000:3000"
     volumes:
       - .:/app/
-  db:
-    image: postgres:12
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=devuser
+  # db:
+  #   image: postgres:12
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=devuser
   bouncer:
     image: edoburu/pgbouncer
     environment:
