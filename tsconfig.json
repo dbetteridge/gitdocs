@@ -2,17 +2,34 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components*": ["components*"],
-      "@models*": ["models*"],
-      "@utils*": ["utils*"],
-      "@controllers*": ["controllers*"],
-      "@contexts*": ["contexts*"],
-      "@pages*": ["pages*"],
-      "@interfaces*": ["interfaces*"]
+      "@components*": [
+        "components*"
+      ],
+      "@models*": [
+        "models*"
+      ],
+      "@utils*": [
+        "utils*"
+      ],
+      "@controllers*": [
+        "controllers*"
+      ],
+      "@contexts*": [
+        "contexts*"
+      ],
+      "@pages*": [
+        "pages*"
+      ],
+      "@interfaces*": [
+        "interfaces*"
+      ]
     },
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -22,8 +39,16 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "allowJs": true
   },
-  "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__tests__/RouterMock.js"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "__tests__/RouterMock.js"
+  ]
 }

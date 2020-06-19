@@ -60,3 +60,51 @@ export const createValidJWT = (
     secret
   );
 };
+
+export const authAzure = (
+  authURL,
+  appID,
+  user,
+  scopes,
+  { project, repo, type, org, space }
+) => {
+  // Go get an azure token
+  // Redirects /api/callback
+  window.open(
+    `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
+      {
+        project: project,
+        repo: repo,
+        type: type,
+        org: org,
+        space: space,
+        owner: user.email,
+        scopes: "vso.code",
+      }
+    )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`,
+    "_target",
+    "width=400,height=600"
+  );
+};
+
+export const authGithub = (
+  githubURL,
+  clientID,
+  user,
+  { repo, type, org, space }
+) => {
+  // Go get a github token
+  // Redirects to /api/github_callback
+  window.open(
+    `${githubURL}?client_id=${clientID}&state=${JSON.stringify({
+      repo: repo,
+      type: type,
+      org: org,
+      space: space,
+      owner: user.email,
+      scopes: "repo",
+    })}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`,
+    "_target",
+    "width=400,height=600"
+  );
+};

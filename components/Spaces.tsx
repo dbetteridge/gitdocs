@@ -27,7 +27,7 @@ const fetchSpaces = async (router) => {
 };
 
 const StyledRow = styled(Row)`
-  height: 330px;
+  height: calc(100vh - 50px - 4rem);
   margin-top: 2rem;
 `;
 

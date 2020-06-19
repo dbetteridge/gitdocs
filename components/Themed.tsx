@@ -1,4 +1,5 @@
 import { ThemeProvider } from "emotion-theming";
+
 import theme from "@rebass/preset";
 
 export default (props) => (

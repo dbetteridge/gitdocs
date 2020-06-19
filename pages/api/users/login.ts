@@ -6,6 +6,7 @@ export default async (req, res) => {
   if (req.method === "POST" && body) {
     const loginDetails = JSON.parse(body);
     const result = await login(loginDetails);
+    console.log(result);
     const user = result.rows[0];
 
     if (user.login) {

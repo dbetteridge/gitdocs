@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Button } from "rebass";
+import { Box, Flex } from "rebass";
 import { Input } from "antd";
 import { RegistrationDetails, RegistrationResult } from "../interfaces/Login";
 import { handleChange } from "@utils/front-helpers";
 import { useRouter, NextRouter } from "next/router";
+import { Button } from "antd";
 
 const register = async (
   details: RegistrationDetails,
@@ -126,8 +127,8 @@ const RegistrationForm = () => {
           <Box px={1} my={2} width={1}>
             <Button
               name="register"
-              variant="primary"
-              mr={2}
+              type="primary"
+              style={{ marginRight: "2rem" }}
               onClick={() => {
                 register(state, router, { state, setState, setError });
               }}

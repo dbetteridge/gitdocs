@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Card, Heading, Flex } from "rebass";
+import React, { useEffect, useState } from "react";
+import { Card, Heading } from "rebass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink, faCodeBranch } from "@fortawesome/free-solid-svg-icons";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Repo from "@models/Repo";
-import { Table, Spin } from "antd";
+import { Table, Spin, Row, Col } from "antd";
 
 import getConfig from "next/config";
-import { getUserDetails } from "@utils/front-helpers";
+import { getUserDetails, authAzure, authGithub } from "@utils/front-helpers";
+import StyledCard from "./StyledCard";
 const { publicRuntimeConfig } = getConfig();
 
 const TableOfContents = () => {
@@ -40,7 +41,7 @@ const TableOfContents = () => {
   const fetchDocs = async (setter) => {
     const { githubURL, authURL, appID, scopes, clientID } = publicRuntimeConfig;
     const user = getUserDetails();
-    console.log("USER", user);
+
     const docs = await fetch(`/api/docs`, {
       method: "POST",
       headers: {
@@ -58,38 +59,15 @@ const TableOfContents = () => {
           // Do something to show an auth error here
           if (d.status === 400) {
             if (type === "azure") {
-              // Go get an azure token
-              // Redirects /api/callback
-              window.open(
-                `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
-                  {
-                    project: project,
-                    repo: repo,
-                    type: type,
-                    org: org,
-                    space: space,
-                    owner: user.email,
-                    scopes: "vso.code",
-                  }
-                )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`,
-                "_target",
-                "width=400,height=600"
-              );
+              authAzure(authURL, appID, user, scopes, {
+                space,
+                org,
+                type,
+                repo,
+                project,
+              });
             } else {
-              // Go get a github token
-              // Redirects to /api/github_callback
-              window.open(
-                `${githubURL}?client_id=${clientID}&state=${JSON.stringify({
-                  repo: repo,
-                  type: type,
-                  org: org,
-                  space: space,
-                  owner: user.email,
-                  scopes: "repo",
-                })}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`,
-                "_target",
-                "width=400,height=600"
-              );
+              authGithub(githubURL, clientID, user, { space, org, type, repo });
             }
           }
         }
@@ -179,10 +157,24 @@ const TableOfContents = () => {
     { title: "Source Link", dataIndex: "sourceLink", key: "sourceLink" },
   ];
 
-  if (!state.docLinks) {
-    <Card width={1} sx={(props) => ({ backgroundColor: props.colors.muted })}>
-      <Spin />
-    </Card>;
+  if (!state.docLinks || !docs) {
+    return (
+      <Row
+        style={{
+          width: "100%",
+          height: "calc(100vh - 50px - 4rem)",
+          marginTop: "2rem",
+        }}
+      >
+        <Col xs={2}></Col>
+        <Col xs={20}>
+          <StyledCard>
+            <Spin />
+          </StyledCard>
+        </Col>
+        <Col xs={2}></Col>
+      </Row>
+    );
   }
 
   return (
@@ -192,7 +184,6 @@ const TableOfContents = () => {
       {docs && docs.length > 0 && (
         <Table columns={columns} dataSource={state.docLinks} />
       )}
-      {!docs || (!docs.length && <Spin />)}
     </Card>
   );
 };

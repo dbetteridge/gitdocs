@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Box, Flex, Button } from "rebass";
+import { Box, Flex } from "rebass";
+import { Button } from "antd";
 import Input from "antd/lib/input/Input";
 import { handleChange } from "@utils/front-helpers";
 import { store } from "@contexts/store";
@@ -93,8 +94,8 @@ const NewSpaceForm = () => {
           <Box my={2} width={1}>
             <Button
               name="createSpace"
-              variant="primary"
-              mr={2}
+              type="primary"
+              style={{ marginRight: "2rem" }}
               onClick={() => {
                 if (bannedNames.some((reg) => reg.test(space.space))) {
                   setError({

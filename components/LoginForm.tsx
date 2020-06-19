@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Box, Flex, Button } from "rebass";
+import { Box, Flex } from "rebass";
 import { Input } from "antd";
 import { LoginCredentials } from "../interfaces/Login";
 import { useRouter, NextRouter } from "next/router";
 import { handleChange } from "@utils/front-helpers";
+import { Button } from "antd";
 
 const login = async (
   details: LoginCredentials,
@@ -102,8 +103,8 @@ const LoginForm = () => {
           <Box px={1} my={2} width={1}>
             <Button
               name="login"
-              variant="primary"
-              mr={2}
+              type="primary"
+              style={{ marginRight: "2rem" }}
               onClick={() => {
                 refs.email.focus();
                 refs.password.focus();

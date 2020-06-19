@@ -1,7 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Box, Flex } from "rebass";
 import { Input, Button } from "antd";
-import { handleChange, timedError } from "@utils/front-helpers";
+import {
+  handleChange,
+  timedError,
+  authAzure,
+  authGithub,
+  getUserDetails,
+} from "@utils/front-helpers";
 import { store } from "@contexts/store";
 import jwt from "jsonwebtoken";
 
@@ -141,6 +147,7 @@ const NewRepoForm = () => {
                     repo,
                     selectedSpace
                   );
+                  const user = getUserDetails();
 
                   if (token.access_token) {
                     if (repo.type === "azure") {
@@ -150,40 +157,15 @@ const NewRepoForm = () => {
                     }
                   } else {
                     if (repo.type === "azure") {
-                      // Go get an azure token
-                      // Redirects /api/callback
-                      window.open(
-                        `${authURL}?client_id=${appID}&response_type=Assertion&state=${JSON.stringify(
-                          {
-                            project: repo.project,
-                            repo: repo.repo,
-                            type: repo.type,
-                            org: repo.org,
-                            space: selectedSpace,
-                            owner: owner,
-                            scopes: "vso.code",
-                          }
-                        )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`,
-                        "_target",
-                        "width=400,height=600"
-                      );
+                      authAzure(authURL, appID, user, scopes, {
+                        ...repo,
+                        space: selectedSpace,
+                      });
                     } else {
-                      // Go get a github token
-                      // Redirects to /api/github_callback
-                      window.open(
-                        `${githubURL}?client_id=${clientID}&state=${JSON.stringify(
-                          {
-                            repo: repo.repo,
-                            type: repo.type,
-                            org: repo.org,
-                            space: selectedSpace,
-                            owner: owner,
-                            scopes: "repo",
-                          }
-                        )}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`,
-                        "_target",
-                        "width=400,height=600"
-                      );
+                      authGithub(githubURL, clientID, user, {
+                        ...repo,
+                        space: selectedSpace,
+                      });
                     }
                   }
                 });

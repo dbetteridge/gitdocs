@@ -7,7 +7,7 @@ import NewRepoForm from "./NewRepoForm";
 import { useRouter } from "next/router";
 import InviteForm from "@components/InviteForm";
 import FullWidthLine from "./FullWidthLine";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import { Row, Col } from "antd/lib/grid";
 import styled from "@emotion/styled";
 
@@ -69,6 +69,17 @@ const Repos = () => {
     }
   }, [router.query]);
 
+  if (!repos) {
+    return (
+      <Row>
+        <Col xs={2}></Col>
+        <Col xs={20}>
+          <Spin />
+        </Col>
+        <Col xs={2}></Col>
+      </Row>
+    );
+  }
   return (
     <Row>
       <Col xs={2}></Col>
@@ -89,17 +100,18 @@ const Repos = () => {
             alignItems={"center"}
             flexWrap="wrap"
           >
-            {repos.map((repo) => (
-              <Name
-                type={selectedRepo === repo.url ? "primary" : "default"}
-                key={repo.id}
-                onClick={() => {
-                  setSelected(repo.url);
-                }}
-              >
-                {repo.org}/{repo.repo}
-              </Name>
-            ))}
+            {repos &&
+              repos.map((repo) => (
+                <Name
+                  type={selectedRepo === repo.url ? "primary" : "default"}
+                  key={repo.id}
+                  onClick={() => {
+                    setSelected(repo.url);
+                  }}
+                >
+                  {repo.org}/{repo.repo}
+                </Name>
+              ))}
           </Flex>
 
           <Button

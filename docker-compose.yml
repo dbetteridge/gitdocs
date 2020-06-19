@@ -3,12 +3,12 @@ services:
   api:
     build: .
     depends_on:
-      - db
+      - bouncer
     environment:
       - PORT=3000
       - PG_HOSTNAME=bouncer
       - PG_DB=gitdocs_dev
-      - PG_USERNAME=postgres
+      - PG_USERNAME=gitdocs
       - PG_PASSWORD=devuser
       - PG_PORT=5432
       - NEPTUNE_URL=empty
@@ -22,13 +22,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=devuser
   bouncer:
-    depends_on:
-      - db
     image: edoburu/pgbouncer
     environment:
-      - DB_USER=postgres
+      - DB_USER=gitdocs
       - DB_PASSWORD=devuser
-      - DB_HOST=db
+      - DB_HOST=host.docker.internal
       - DB_NAME=gitdocs_dev
+      - DB_PORT=5433
     ports:
-      - 5433:5432
+      - 5432:5433
