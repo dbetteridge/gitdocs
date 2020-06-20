@@ -27,7 +27,7 @@ export const refreshToken = async (refresh_token) => {
         "Content-Type": "application/x-www-form-urlencoded",
         "Content-Length": "1654",
       },
-      body: `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${process.env.clientSecret}&grant_type=refresh_token&assertion=${refresh_token}&redirect_uri=https://localhost:3000/api/callback`,
+      body: `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${process.env.clientSecret}&grant_type=refresh_token&assertion=${refresh_token}&redirect_uri=https://${process.env.HOST}:3000/api/callback`,
     }
   ).then((res) => res.json());
 

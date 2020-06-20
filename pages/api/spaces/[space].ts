@@ -3,10 +3,7 @@ import { fetchUser } from "@utils/helpers";
 import mailjet from "node-mailjet";
 
 const message = (invite_token, space, owner, user) => {
-  const url =
-    process.env.NODE_ENV === "production"
-      ? "https://gitdocs.page"
-      : "https://localhost:3000";
+  const url = process.env.HOST;
   return {
     From: {
       Email: "admin@gitdocs.page",

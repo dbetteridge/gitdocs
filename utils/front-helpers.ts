@@ -81,7 +81,9 @@ export const authAzure = (
         owner: user.email,
         scopes: "vso.code",
       }
-    )}&scope=${scopes}&redirect_uri=https://localhost:3000/api/callback`,
+    )}&scope=${scopes}&redirect_uri=https://${
+      process.env.HOST
+    }:3000/api/callback`,
     "_target",
     "width=400,height=600"
   );
@@ -103,7 +105,9 @@ export const authGithub = (
       space: space,
       owner: user.email,
       scopes: "repo",
-    })}&scope=repo&redirect_uri=https://localhost:3000/api/github_callback`,
+    })}&scope=repo&redirect_uri=https://${
+      process.env.HOST
+    }:3000/api/github_callback`,
     "_target",
     "width=400,height=600"
   );

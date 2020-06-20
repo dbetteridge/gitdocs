@@ -13,7 +13,7 @@ export default async (req, res) => {
     headers: {
       "content-type": "application/x-www-form-urlencoded",
     },
-    data: `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${clientSecret}&grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${code}&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2Fapi%2Fcallback`,
+    data: `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${clientSecret}&grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${code}&redirect_uri=https%3A%2F%2F${process.env.HOST}%3A3000%2Fapi%2Fcallback`,
   }).then((response) => response.data);
 
   const time = new Date().getTime();
