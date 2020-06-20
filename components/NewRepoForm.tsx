@@ -77,7 +77,14 @@ const NewRepoForm = () => {
     setOwner(email);
   }, []);
 
-  const { githubURL, authURL, appID, scopes, GITHUB_ID } = publicRuntimeConfig;
+  const {
+    githubURL,
+    authURL,
+    appID,
+    scopes,
+    GITHUB_ID,
+    HOST_URL,
+  } = publicRuntimeConfig;
   const setState = (value) => {
     dispatch({ type: "ADDSPACE", repo: value });
   };
@@ -157,12 +164,12 @@ const NewRepoForm = () => {
                     }
                   } else {
                     if (repo.type === "azure") {
-                      authAzure(authURL, appID, user, scopes, {
+                      authAzure(authURL, appID, user, scopes, HOST_URL, {
                         ...repo,
                         space: selectedSpace,
                       });
                     } else {
-                      authGithub(githubURL, GITHUB_ID, user, {
+                      authGithub(githubURL, GITHUB_ID, user, HOST_URL, {
                         ...repo,
                         space: selectedSpace,
                       });

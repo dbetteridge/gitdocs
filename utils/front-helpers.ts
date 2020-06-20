@@ -66,6 +66,7 @@ export const authAzure = (
   appID,
   user,
   scopes,
+  HOST_URL,
   { project, repo, type, org, space }
 ) => {
   // Go get an azure token
@@ -81,9 +82,7 @@ export const authAzure = (
         owner: user.email,
         scopes: "vso.code",
       }
-    )}&scope=${scopes}&redirect_uri=https://${
-      process.env.HOST_URL
-    }/api/callback`,
+    )}&scope=${scopes}&redirect_uri=https://${HOST_URL}/api/callback`,
     "_target",
     "width=400,height=600"
   );
@@ -92,6 +91,7 @@ export const authAzure = (
 export const authGithub = (
   githubURL,
   GITHUB_ID,
+  HOST_URL,
   user,
   { repo, type, org, space }
 ) => {
@@ -105,9 +105,7 @@ export const authGithub = (
       space: space,
       owner: user.email,
       scopes: "repo",
-    })}&scope=repo&redirect_uri=https://${
-      process.env.HOST_URL
-    }/api/github_callback`,
+    })}&scope=repo&redirect_uri=https://${HOST_URL}/api/github_callback`,
     "_target",
     "width=400,height=600"
   );

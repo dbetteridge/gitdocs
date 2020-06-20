@@ -45,6 +45,7 @@ const TableOfContents = () => {
       appID,
       scopes,
       GITHUB_ID,
+      HOST_URL,
     } = publicRuntimeConfig;
     const user = getUserDetails();
 
@@ -65,7 +66,7 @@ const TableOfContents = () => {
           // Do something to show an auth error here
           if (d.status === 400) {
             if (type === "azure") {
-              authAzure(authURL, appID, user, scopes, {
+              authAzure(authURL, appID, user, scopes, HOST_URL, {
                 space,
                 org,
                 type,
@@ -73,7 +74,7 @@ const TableOfContents = () => {
                 project,
               });
             } else {
-              authGithub(githubURL, GITHUB_ID, user, {
+              authGithub(githubURL, GITHUB_ID, user, HOST_URL, {
                 space,
                 org,
                 type,
