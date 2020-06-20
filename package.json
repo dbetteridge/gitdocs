@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "NODE_ENV=production next start",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "migrate": "knex migrate:latest",
+    "migrate:prod": "NODE_ENV=production npm run migrate",
+    "seed": "knex seed:run",
+    "seed:prod": "NODE_ENV=production npm run seed"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

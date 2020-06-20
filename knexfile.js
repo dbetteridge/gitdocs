@@ -1,5 +1,7 @@
 // Update with your config settings.
-require("dotenv").config(".env");
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config(".env");
+}
 module.exports = {
   development: {
     client: "postgresql",
