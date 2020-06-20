@@ -82,7 +82,7 @@ export const authAzure = (
         scopes: "vso.code",
       }
     )}&scope=${scopes}&redirect_uri=https://${
-      process.env.HOST
+      process.env.HOST_URL
     }:3000/api/callback`,
     "_target",
     "width=400,height=600"
@@ -106,7 +106,7 @@ export const authGithub = (
       owner: user.email,
       scopes: "repo",
     })}&scope=repo&redirect_uri=https://${
-      process.env.HOST
+      process.env.HOST_URL
     }:3000/api/github_callback`,
     "_target",
     "width=400,height=600"
