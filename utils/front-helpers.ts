@@ -91,14 +91,14 @@ export const authAzure = (
 
 export const authGithub = (
   githubURL,
-  clientID,
+  GITHUB_ID,
   user,
   { repo, type, org, space }
 ) => {
   // Go get a github token
   // Redirects to /api/github_callback
   window.open(
-    `${githubURL}?client_id=${clientID}&state=${JSON.stringify({
+    `${githubURL}?client_id=${GITHUB_ID}&state=${JSON.stringify({
       repo: repo,
       type: type,
       org: org,

@@ -77,7 +77,7 @@ const NewRepoForm = () => {
     setOwner(email);
   }, []);
 
-  const { githubURL, authURL, appID, scopes, clientID } = publicRuntimeConfig;
+  const { githubURL, authURL, appID, scopes, GITHUB_ID } = publicRuntimeConfig;
   const setState = (value) => {
     dispatch({ type: "ADDSPACE", repo: value });
   };
@@ -162,7 +162,7 @@ const NewRepoForm = () => {
                         space: selectedSpace,
                       });
                     } else {
-                      authGithub(githubURL, clientID, user, {
+                      authGithub(githubURL, GITHUB_ID, user, {
                         ...repo,
                         space: selectedSpace,
                       });

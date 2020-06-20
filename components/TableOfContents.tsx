@@ -39,7 +39,13 @@ const TableOfContents = () => {
   };
 
   const fetchDocs = async (setter) => {
-    const { githubURL, authURL, appID, scopes, clientID } = publicRuntimeConfig;
+    const {
+      githubURL,
+      authURL,
+      appID,
+      scopes,
+      GITHUB_ID,
+    } = publicRuntimeConfig;
     const user = getUserDetails();
 
     const docs = await fetch(`/api/docs`, {
@@ -67,7 +73,12 @@ const TableOfContents = () => {
                 project,
               });
             } else {
-              authGithub(githubURL, clientID, user, { space, org, type, repo });
+              authGithub(githubURL, GITHUB_ID, user, {
+                space,
+                org,
+                type,
+                repo,
+              });
             }
           }
         }
