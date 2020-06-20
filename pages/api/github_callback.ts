@@ -18,7 +18,7 @@ export default async (req, res) => {
         client_id: clientID,
         client_secret: githubSecret,
         code,
-        redirect_uri: `https://${process.env.HOST_URL}:3000/api/github_callback`,
+        redirect_uri: `https://${process.env.HOST_URL}/api/github_callback`,
         state,
       }),
     }).then((response) => {

@@ -83,7 +83,7 @@ export const authAzure = (
       }
     )}&scope=${scopes}&redirect_uri=https://${
       process.env.HOST_URL
-    }:3000/api/callback`,
+    }/api/callback`,
     "_target",
     "width=400,height=600"
   );
@@ -107,7 +107,7 @@ export const authGithub = (
       scopes: "repo",
     })}&scope=repo&redirect_uri=https://${
       process.env.HOST_URL
-    }:3000/api/github_callback`,
+    }/api/github_callback`,
     "_target",
     "width=400,height=600"
   );
