@@ -12,7 +12,7 @@ exports.seed = async function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex.raw(
-        `SELECT register('Daniel Betteridge','danielrbetteridge@gmail.com','testpassword');`
+        `SELECT register('Daniel Betteridge',${process.env.TEST_USERNAME},${process.env.TEST_PASSWORD});`
       );
     });
 };
