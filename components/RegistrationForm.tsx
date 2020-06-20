@@ -19,12 +19,13 @@ const register = async (
     setTimeout(() => {
       setError({ hasError: false, error: "" });
     }, 1500);
-  }
-  const registrationResult = await registerUser(details);
-  if (!registrationResult.error) {
-    handleRegistrationSuccess(registrationResult, router);
   } else {
-    handleRegistrationError(registrationResult, state, setError, setState);
+    const registrationResult = await registerUser(details);
+    if (!registrationResult.error) {
+      handleRegistrationSuccess(registrationResult, router);
+    } else {
+      handleRegistrationError(registrationResult, state, setError, setState);
+    }
   }
 };
 

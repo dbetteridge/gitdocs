@@ -27,6 +27,9 @@ export const register = async (details: RegistrationDetails) => {
       details.email,
       details.password,
     ]);
+    if (details.email.length === 0 || !details.email) {
+      return { detail: "You must supply an email" };
+    }
     if (details.invite_token) {
       const invite = await acceptInvite(details.invite_token, details.email);
       result.invite = invite;
@@ -34,6 +37,10 @@ export const register = async (details: RegistrationDetails) => {
     }
     return result;
   } catch (err) {
+    const matches = err.detail.match(/Key \(email\)=\(.+\) already exists\./);
+    if (matches && matches.length > 0) {
+      return { detail: "User with this email address exists" };
+    }
     return err;
   }
 };
