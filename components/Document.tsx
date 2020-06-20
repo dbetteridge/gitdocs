@@ -11,6 +11,20 @@ const AlignedH3 = styled.h3`
   }
 `;
 
+const DocumentContainer = styled.div`
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 500px) {
+    padding: 0rem;
+  }
+`;
+
 export default function Document() {
   const router = useRouter();
   const { space, type, org, repo, path } = router.query;
@@ -48,18 +62,7 @@ export default function Document() {
 
   if (doc && doc.html) {
     return (
-      <div
-        style={{
-          padding: "1rem",
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        key={doc.path}
-      >
+      <DocumentContainer key={doc.path}>
         {/** TODO: Link to single file view page  */}
 
         <AlignedH3>{doc.name}</AlignedH3>
@@ -76,6 +79,7 @@ export default function Document() {
             box-sizing: border-box;
             min-width: 200px;
             max-width: 980px;
+            width: 100%;
             padding: 45px;
           }
 
@@ -85,7 +89,7 @@ export default function Document() {
             }
           }
         `}</style>
-      </div>
+      </DocumentContainer>
     );
   } else {
     return null;
