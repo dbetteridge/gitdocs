@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "node ./server.js",
-    "dev:docker": "docker-compose up",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production next start",
     "test": "jest --watch",
     "test:ci": "jest --ci"
   },
