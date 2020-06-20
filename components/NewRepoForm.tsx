@@ -164,15 +164,21 @@ const NewRepoForm = () => {
                     }
                   } else {
                     if (repo.type === "azure") {
-                      authAzure(authURL, appID, user, scopes, HOST_URL, {
-                        ...repo,
-                        space: selectedSpace,
-                      });
+                      authAzure(
+                        { authURL, appID, user, scopes, HOST_URL },
+                        {
+                          ...repo,
+                          space: selectedSpace,
+                        }
+                      );
                     } else {
-                      authGithub(githubURL, GITHUB_ID, user, HOST_URL, {
-                        ...repo,
-                        space: selectedSpace,
-                      });
+                      authGithub(
+                        { githubURL, GITHUB_ID, user, HOST_URL },
+                        {
+                          ...repo,
+                          space: selectedSpace,
+                        }
+                      );
                     }
                   }
                 });

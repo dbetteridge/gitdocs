@@ -66,20 +66,26 @@ const TableOfContents = () => {
           // Do something to show an auth error here
           if (d.status === 400) {
             if (type === "azure") {
-              authAzure(authURL, appID, user, scopes, HOST_URL, {
-                space,
-                org,
-                type,
-                repo,
-                project,
-              });
+              authAzure(
+                { authURL, appID, user, scopes, HOST_URL },
+                {
+                  space,
+                  org,
+                  type,
+                  repo,
+                  project,
+                }
+              );
             } else {
-              authGithub(githubURL, GITHUB_ID, user, HOST_URL, {
-                space,
-                org,
-                type,
-                repo,
-              });
+              authGithub(
+                { githubURL, GITHUB_ID, user, HOST_URL },
+                {
+                  space,
+                  org,
+                  type,
+                  repo,
+                }
+              );
             }
           }
         }

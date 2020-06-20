@@ -62,11 +62,7 @@ export const createValidJWT = (
 };
 
 export const authAzure = (
-  authURL,
-  appID,
-  user,
-  scopes,
-  HOST_URL,
+  { authURL, appID, user, scopes, HOST_URL },
   { project, repo, type, org, space }
 ) => {
   // Go get an azure token
@@ -89,10 +85,7 @@ export const authAzure = (
 };
 
 export const authGithub = (
-  githubURL,
-  GITHUB_ID,
-  HOST_URL,
-  user,
+  { githubURL, GITHUB_ID, HOST_URL, user },
   { repo, type, org, space }
 ) => {
   console.log(
