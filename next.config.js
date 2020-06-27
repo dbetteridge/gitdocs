@@ -1,6 +1,6 @@
 require("dotenv").config();
 const withCSS = require("@zeit/next-css");
-
+const { githubURL, authURL, appID, scopes, GITHUB_ID, HOST_URL } = process.env;
 module.exports = withCSS({
   webpack(config, { dev }) {
     if (dev) {
@@ -12,7 +12,12 @@ module.exports = withCSS({
     tsconfigPaths: true,
   },
   publicRuntimeConfig: {
-    ...process.env,
+    githubURL,
+    authURL,
+    appID,
+    scopes,
+    GITHUB_ID,
+    HOST_URL,
   },
   typescript: {
     ignoreDevErrors: true,
