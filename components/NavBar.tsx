@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Flex } from "rebass";
 import Search from "./Search";
 import ThemeI from "types/Theme";
+import ProfileMenu from "./ProfileMenu";
 
 const StyledRow: any = styled(Row)<ThemeI>`
   background-color: ${({ theme: { colors } }) => colors.primary};
@@ -63,22 +64,7 @@ const NavBar = () => {
       </Col>
       <Col xs={8}>
         <Flex justifyContent={"flex-end"}>
-          {!isLoggedIn && !isLogin && (
-            <Link href={"/login"}>
-              <Button>Login</Button>
-            </Link>
-          )}
-
-          {isLoggedIn && (
-            <Button
-              onClick={() => {
-                localStorage.removeItem("token");
-                window.location.reload();
-              }}
-            >
-              Logout
-            </Button>
-          )}
+          <ProfileMenu isLoggedIn isLogin />
         </Flex>
       </Col>
     </StyledRow>
