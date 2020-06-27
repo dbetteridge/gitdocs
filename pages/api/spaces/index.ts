@@ -10,7 +10,7 @@ export default async (req, res) => {
       res.json(spaces);
     } catch (err) {
       res.status(403);
-      res.json({ error: err });
+      res.json({ error: JSON.stringify(err) });
     }
   }
 
@@ -22,7 +22,7 @@ export default async (req, res) => {
       res.json(newSpace);
     } catch (err) {
       res.status(403);
-      res.json({ error: err });
+      res.json({ error: JSON.stringify(err) });
     }
   }
 };

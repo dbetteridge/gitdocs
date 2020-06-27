@@ -63,6 +63,12 @@ export const getSpaces = async (user) => {
   return User.relatedQuery("spaces").for(user.email);
 };
 
+export const validSpace = async (user, space) => {
+  return User.relatedQuery("spaces")
+    .for(user.email)
+    .where({ "spaces.id": space });
+};
+
 export const getTokens = async (user) => {
   return User.relatedQuery("tokens").for(user.email);
 };

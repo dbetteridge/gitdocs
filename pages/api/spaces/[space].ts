@@ -53,7 +53,7 @@ export default async (req, res) => {
       }
     } catch (err) {
       res.status(403);
-      res.json({ error: err });
+      res.json({ error: JSON.stringify(err) });
     }
   }
 };

@@ -1,4 +1,4 @@
-import { getUser, getSpaces } from "../controllers/Users";
+import { getUser, validSpace } from "../controllers/Users";
 import jwt from "jsonwebtoken";
 import Space from "@models/Space";
 
@@ -26,8 +26,8 @@ export async function fetchUser(request) {
 export async function isAllowed(request, spaceID, res) {
   try {
     const user = await fetchUser(request);
-    const spaces = await getSpaces(user);
-    const inSpace = spaces.find((space: Space) => space.id === spaceID);
+    const spaces = await validSpace(user, spaceID);
+    const inSpace = spaces.length && spaces.length > 0;
     if (!inSpace) {
       res.status(403);
       res.json({ error: "No access to this space" });
@@ -36,6 +36,6 @@ export async function isAllowed(request, spaceID, res) {
     }
   } catch (err) {
     res.status(403);
-    res.json({ error: err });
+    res.json({ error: JSON.stringify(err) });
   }
 }

@@ -5,7 +5,7 @@ export default async (req, res) => {
     await fetchUser(req);
   } catch (err) {
     res.status(403);
-    res.json({ error: err });
+    res.json({ error: JSON.stringify(err) });
   }
   const users = await getUsers();
   res.json(users);

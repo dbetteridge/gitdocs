@@ -54,6 +54,7 @@
   "devDependencies": {
     "@types/node": "^14.0.1",
     "@types/react": "^16.9.35",
+    "loadtest": "^5.0.4",
     "typescript": "^3.9.5"
   }
 }
