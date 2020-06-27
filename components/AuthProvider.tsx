@@ -10,15 +10,13 @@ const AuthProvider = ({ children }) => {
     if (
       !checkLoginStatus() &&
       router.pathname !== "/login" &&
-      router.pathname !== "/register" &&
-      router.pathname !== "/" &&
-      router.pathname !== "/app"
+      router.pathname !== "/register"
     ) {
       setLoggedIn(false);
     }
   });
 
-  if (loggedIn) {
+  if (!loggedIn) {
     return <Error />;
   }
   return children;
