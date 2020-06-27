@@ -20,6 +20,11 @@ const ProfileMenu = ({ isLoggedIn, isLogin }) => {
           <Col xs={24}>
             <Space direction={"vertical"}>
               {!isLoggedIn && !isLogin && (
+                <Link href={"/register"}>
+                  <Button>Register</Button>
+                </Link>
+              )}
+              {!isLoggedIn && !isLogin && (
                 <Link href={"/login"}>
                   <Button>Login</Button>
                 </Link>

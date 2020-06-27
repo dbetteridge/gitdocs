@@ -1,18 +1,26 @@
 import { checkLoginStatus } from "../utils/front-helpers";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Error from "@components/Error";
 
 const AuthProvider = ({ children }) => {
+  const [loggedIn, setLoggedIn] = useState(true);
   const router = useRouter();
   useEffect(() => {
     if (
       !checkLoginStatus() &&
       router.pathname !== "/login" &&
-      router.pathname !== "/register"
+      router.pathname !== "/register" &&
+      router.pathname !== "/" &&
+      router.pathname !== "/app"
     ) {
-      router.push("/login", "/login");
+      setLoggedIn(false);
     }
   });
+
+  if (loggedIn) {
+    return <Error />;
+  }
   return children;
 };
 

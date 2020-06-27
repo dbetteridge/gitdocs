@@ -6,18 +6,19 @@ const token = createValidJWT(
   process.env.SECRET
 );
 console.log(token);
+jest.setTimeout(40000);
 it("Load tests the Repos API", async () => {
   const results = new Promise((ok, fail) => {
     loadtest.loadTest(
       {
         insecure: true,
-        url: "https://localhost:3000/api/repos/daniel",
-        maxRequests: 200,
+        url: "https://gitdocs.page/api/repos/daniel",
+        maxRequests: 1000,
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
         },
-        concurrency: 50,
+        concurrency: 100,
       },
       (err, result) => {
         if (err) {

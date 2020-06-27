@@ -88,10 +88,6 @@ export const authGithub = (
   { githubURL, GITHUB_ID, HOST_URL, user },
   { repo, type, org, space }
 ) => {
-  console.log(
-    "REDIRECT",
-    `redirect_uri=https://${HOST_URL}/api/github_callback`
-  );
   // Go get a github token
   // Redirects to /api/github_callback
   window.open(

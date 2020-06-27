@@ -13,7 +13,7 @@ const fetchSpaces = async (router) => {
   })
     .then((d) => {
       if (!d.ok) {
-        window.location.replace("/login");
+        // window.location.replace("/login");
       } else {
         return d;
       }

@@ -64,7 +64,7 @@ const NavBar = () => {
       </Col> */}
       <Col xs={12}>
         <Flex justifyContent={"flex-end"}>
-          <ProfileMenu isLoggedIn isLogin />
+          <ProfileMenu isLoggedIn={isLoggedIn} isLogin={isLogin} />
         </Flex>
       </Col>
     </StyledRow>
