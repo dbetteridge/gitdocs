@@ -14,7 +14,7 @@ const register = async (
   if (!details.email || !details.password) {
     setError({
       hasError: true,
-      error: "Username and Password cannot be empty",
+      error: "Email and Password cannot be empty",
     });
     setTimeout(() => {
       setError({ hasError: false, error: "" });
@@ -127,6 +127,7 @@ const RegistrationForm = () => {
           {error.hasError && <Box>{error.error}</Box>}
           <Box px={1} my={2} width={1}>
             <Button
+              id="register"
               name="register"
               type="primary"
               style={{ marginRight: "2rem" }}

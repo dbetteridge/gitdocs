@@ -11,6 +11,9 @@ const localStorageMock = (function () {
     clear() {
       store = {};
     },
+    removeItem(key) {
+      delete store[key];
+    },
   };
 })();
 

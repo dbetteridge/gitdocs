@@ -1,58 +1,63 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, queryByAttribute } from "@testing-library/react";
 import Index from "../pages/login";
 import { StateProvider as Provider } from "../contexts/store";
 import RouterMock from "../utils/RouterMock";
 import fetchMock from "../utils/FetchMock";
+import Themer from "@components/Themed";
 
 test("The login form renders correctly", () => {
-  const { getByText, getByLabelText } = render(
+  const { getAllByText } = render(
     <RouterMock>
-      <Provider>
-        <Index />
-      </Provider>
+      <Themer>
+        <Provider>
+          <Index />
+        </Provider>
+      </Themer>
     </RouterMock>
   );
-  const emailInputElement = getByLabelText("Email");
-  expect(emailInputElement).toBeInTheDocument();
-  const passwordInputElement = getByLabelText("Password");
-  expect(passwordInputElement).toBeInTheDocument();
-  const loginButtonElement = getByText("Login");
-  expect(loginButtonElement).toBeInTheDocument();
+
+  const loginButtonElement = getAllByText("Login");
+  expect(loginButtonElement[0]).toBeInTheDocument();
 });
 
 test("Login API returns token", async () => {
   global.fetch = fetchMock(jest, "result");
-  const { getByText, getByLabelText } = render(
+  const { getByRole, ...page } = render(
     <RouterMock>
-      <Provider>
-        <Index />
-      </Provider>
+      <Themer>
+        <Provider>
+          <Index />
+        </Provider>
+      </Themer>
     </RouterMock>
   );
-  const emailInputElement = getByLabelText("Email");
+
+  const getById = queryByAttribute.bind(null, "id");
+  const emailInputElement = getById(page.container, "email");
   fireEvent.change(emailInputElement, { target: { value: "username" } });
-  const passwordInputElement = getByLabelText("Password");
+  const passwordInputElement = getById(page.container, "password");
   fireEvent.change(passwordInputElement, { target: { value: "testpassword" } });
-  const loginButtonElement = getByText("Login");
+  const loginButtonElement = getById(page.container, "login");
 
   await loginButtonElement.click();
 });
 
 test("Login API returns empty token", async () => {
   global.fetch = fetchMock(jest, "");
-  const { getByText, getByLabelText, findByText } = render(
+  const { findByText, ...page } = render(
     <RouterMock>
       <Provider>
         <Index />
       </Provider>
     </RouterMock>
   );
-  const emailInputElement = getByLabelText("Email");
+  const getById = queryByAttribute.bind(null, "id");
+  const emailInputElement = getById(page.container, "email");
   fireEvent.change(emailInputElement, { target: { value: "username" } });
-  const passwordInputElement = getByLabelText("Password");
+  const passwordInputElement = getById(page.container, "password");
   fireEvent.change(passwordInputElement, { target: { value: "testpassword" } });
-  const loginButtonElement = getByText("Login");
+  const loginButtonElement = getById(page.container, "login");
 
   await loginButtonElement.click();
   await findByText("Email or Password is incorrect");
@@ -60,18 +65,20 @@ test("Login API returns empty token", async () => {
 
 test("No empty username/password", async () => {
   global.fetch = fetchMock(jest, "");
-  const { getByText, getByLabelText, findByText } = render(
+  const { findByText, ...page } = render(
     <RouterMock>
       <Provider>
         <Index />
       </Provider>
     </RouterMock>
   );
-  const emailInputElement = getByLabelText("Email");
+  const getById = queryByAttribute.bind(null, "id");
+  const emailInputElement = getById(page.container, "email");
   fireEvent.change(emailInputElement, { target: { value: "username" } });
-  const passwordInputElement = getByLabelText("Password");
+  const passwordInputElement = getById(page.container, "password");
   fireEvent.change(passwordInputElement, { target: { value: "" } });
-  const loginButtonElement = getByText("Login");
+  const loginButtonElement = getById(page.container, "login");
+
   await loginButtonElement.click();
   await findByText("Email and Password cannot be empty");
 });

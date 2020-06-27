@@ -2,6 +2,7 @@ import { RouterContext } from "next/dist/next-server/lib/router-context";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Router from "next/router";
+import { act } from "react-dom/test-utils";
 
 function RouterMock({ children }) {
   const [pathname, setPathname] = useState("/");
@@ -10,9 +11,12 @@ function RouterMock({ children }) {
     pathname,
     prefetch: () => {},
     push: async (newPathname) => {
-      setPathname(newPathname);
+      act(() => {
+        setPathname(newPathname);
+      });
       return newPathname;
     },
+    query: {},
   };
 
   Router.router = mockRouter;

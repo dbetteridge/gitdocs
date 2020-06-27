@@ -102,6 +102,7 @@ const LoginForm = () => {
           {error.hasError && <Box>{error.error}</Box>}
           <Box px={1} my={2} width={1}>
             <Button
+              id="login"
               name="login"
               type="primary"
               style={{ marginRight: "2rem" }}

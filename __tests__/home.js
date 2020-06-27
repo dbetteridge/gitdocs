@@ -5,21 +5,23 @@ import { StateProvider as Provider } from "../contexts/store";
 import Themer from "@components/Themed";
 import RouterMock from "../utils/RouterMock";
 
-test("renders Spaces h2", () => {
+test("renders title h2", () => {
   const { getByText } = render(
     <RouterMock>
-      <Provider>
-        <Index />
-      </Provider>
+      <Themer>
+        <Provider>
+          <Index />
+        </Provider>
+      </Themer>
     </RouterMock>
   );
-  const linkElement = getByText("Spaces");
+  const linkElement = getByText("A documentation sharing space");
   expect(linkElement).toBeInTheDocument();
   expect(linkElement.nodeName).toEqual("H2");
 });
 
-test("render add spaces button", () => {
-  const page = render(
+test("render Try it for free button", () => {
+  const { getByText } = render(
     <Themer>
       <Provider>
         <Index />
@@ -27,7 +29,6 @@ test("render add spaces button", () => {
     </Themer>
   );
 
-  const getById = queryByAttribute.bind(null, "id");
-  const buttonElement = getById(page.container, "toggleNewSpaceForm");
+  const buttonElement = getByText("Try it out for free");
   expect(buttonElement).toBeInTheDocument();
 });

@@ -38,22 +38,32 @@ const InviteForm = () => {
     emailInput: string;
     emails: string[];
     space?: string | string[];
+    timer?: any;
   }>({
     emailInput: "",
     emails: [],
     space: router.query && router.query.space,
+    timer: null,
   });
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState({ hasError: false, error: "" });
 
-  const addEmail = debounce((email) => {
-    setState({
-      ...state,
-      emails: state.emails.concat([email]),
-      emailInput: "",
-    });
-  }, 300);
+  const addEmail = (email) => {
+    if (email.length) {
+      if (state.timer) {
+        clearTimeout(state.timer);
+      }
+      const timer = setTimeout(() => {
+        setState({
+          ...state,
+          emails: state.emails.concat([email]),
+          emailInput: "",
+        });
+      }, 1000);
+      setState({ ...state, timer, emailInput: email });
+    }
+  };
 
   useEffect(() => {
     if (router.query && router.query.space) {
@@ -84,6 +94,18 @@ const InviteForm = () => {
                 addEmail(event.target.value.trim());
               }
             }}
+            onBlur={() => {
+              if (
+                state.emailInput.length &&
+                state.emailInput.replace(/ /g, "") !== ""
+              ) {
+                setState({
+                  ...state,
+                  emails: state.emails.concat([state.emailInput]),
+                  emailInput: "",
+                });
+              }
+            }}
           ></Input>
           <Box>
             {state.emails.map((email) => (
@@ -97,6 +119,7 @@ const InviteForm = () => {
                   border: "1px solid grey",
                   borderRadius: "5px",
                 }}
+                key={email}
               >
                 <Box width={0.9} sx={{ fontSize: "12px" }}>
                   {email}

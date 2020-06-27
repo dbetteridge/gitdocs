@@ -1,83 +1,94 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, queryByAttribute } from "@testing-library/react";
 import Index from "../pages/register";
 import { StateProvider as Provider } from "../contexts/store";
 import RouterMock from "../utils/RouterMock";
 import fetchMock from "../utils/FetchMock";
+import Themer from "@components/Themed";
 
-test("The registration form renders correctly", () => {
-  const { getByText, getByLabelText } = render(
-    <RouterMock>
-      <Provider>
-        <Index />
-      </Provider>
-    </RouterMock>
-  );
-  const emailInputElement = getByLabelText("Email");
-  expect(emailInputElement).toBeInTheDocument();
-  const passwordInputElement = getByLabelText("Password");
-  expect(passwordInputElement).toBeInTheDocument();
-  const loginButtonElement = getByText("Register");
-  expect(loginButtonElement).toBeInTheDocument();
+beforeEach(() => {
+  localStorage.clear();
 });
 
-test("Login API returns token", async () => {
-  global.fetch = fetchMock(jest, "result");
-  const { getByText, getByLabelText } = render(
+test("The register form renders correctly", () => {
+  const { getAllByText } = render(
     <RouterMock>
-      <Provider>
-        <Index />
-      </Provider>
+      <Themer>
+        <Provider>
+          <Index />
+        </Provider>
+      </Themer>
     </RouterMock>
   );
-  const nameInputElement = getByLabelText("Name");
-  fireEvent.change(nameInputElement, { target: { value: "users name" } });
-  const emailInputElement = getByLabelText("Email");
+
+  const registerButtonElement = getAllByText("Register");
+  expect(registerButtonElement[0]).toBeInTheDocument();
+});
+
+test("Register API returns token", async () => {
+  global.fetch = fetchMock(jest, { token: "blah" });
+  const { getByRole, ...page } = render(
+    <RouterMock>
+      <Themer>
+        <Provider>
+          <Index />
+        </Provider>
+      </Themer>
+    </RouterMock>
+  );
+
+  const getById = queryByAttribute.bind(null, "id");
+  const nameInputElement = getById(page.container, "name");
+  fireEvent.change(nameInputElement, { target: { value: "John Smith" } });
+  const emailInputElement = getById(page.container, "email");
   fireEvent.change(emailInputElement, { target: { value: "username" } });
-  const passwordInputElement = getByLabelText("Password");
+  const passwordInputElement = getById(page.container, "password");
   fireEvent.change(passwordInputElement, { target: { value: "testpassword" } });
-  const loginButtonElement = getByText("Register");
+  const registerButtonElement = getById(page.container, "register");
 
-  await loginButtonElement.click();
+  await registerButtonElement.click();
 });
 
-test("Registration API returns err", async () => {
-  global.fetch = fetchMock(jest, { error: "Email already exists" });
-  const { getByText, getByLabelText, findByText } = render(
+test("Register API returns empty token, no token in localstorage", async () => {
+  global.fetch = fetchMock(jest, { token: "" });
+  const { findByText, ...page } = render(
     <RouterMock>
       <Provider>
         <Index />
       </Provider>
     </RouterMock>
   );
-  const nameInputElement = getByLabelText("Name");
-  fireEvent.change(nameInputElement, { target: { value: "users name" } });
-  const emailInputElement = getByLabelText("Email");
+  const getById = queryByAttribute.bind(null, "id");
+  const nameInputElement = getById(page.container, "name");
+  fireEvent.change(nameInputElement, { target: { value: "John Smith" } });
+  const emailInputElement = getById(page.container, "email");
   fireEvent.change(emailInputElement, { target: { value: "username" } });
-  const passwordInputElement = getByLabelText("Password");
+  const passwordInputElement = getById(page.container, "password");
   fireEvent.change(passwordInputElement, { target: { value: "testpassword" } });
-  const loginButtonElement = getByText("Register");
+  const registerButtonElement = getById(page.container, "register");
 
-  await loginButtonElement.click();
-  await findByText("Email already exists");
+  await registerButtonElement.click();
+  expect(localStorage.getItem("token")).toBeNull();
 });
 
-test("No empty name/email/password", async () => {
+test("No empty username/password", async () => {
   global.fetch = fetchMock(jest, "");
-  const { getByText, getByLabelText, findByText } = render(
+  const { findByText, ...page } = render(
     <RouterMock>
       <Provider>
         <Index />
       </Provider>
     </RouterMock>
   );
-  const nameInputElement = getByLabelText("Name");
-  fireEvent.change(nameInputElement, { target: { value: "users name" } });
-  const emailInputElement = getByLabelText("Email");
+  const getById = queryByAttribute.bind(null, "id");
+  const nameInputElement = getById(page.container, "name");
+  fireEvent.change(nameInputElement, { target: { value: "John Smith" } });
+  const emailInputElement = getById(page.container, "email");
   fireEvent.change(emailInputElement, { target: { value: "username" } });
-  const passwordInputElement = getByLabelText("Password");
+  const passwordInputElement = getById(page.container, "password");
   fireEvent.change(passwordInputElement, { target: { value: "" } });
-  const loginButtonElement = getByText("Register");
-  await loginButtonElement.click();
-  await findByText("Username and Password cannot be empty");
+  const registerButtonElement = getById(page.container, "register");
+
+  await registerButtonElement.click();
+  await findByText("Email and Password cannot be empty");
 });
