@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Popover, Button, Row, Col, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 const ProfileMenu = ({ isLoggedIn, isLogin }) => {
   const [closed, setClosed] = useState(true);
@@ -51,7 +53,9 @@ const ProfileMenu = ({ isLoggedIn, isLogin }) => {
         </Row>
       }
     >
-      <Button>More</Button>
+      <Button>
+        <FontAwesomeIcon icon={faUserCircle} />
+      </Button>
     </Popover>
   );
 };

@@ -32,7 +32,7 @@ const NavBar = () => {
   });
   return (
     <StyledRow>
-      <Col xs={8}>
+      <Col xs={12}>
         <Button
           onClick={() => {
             router.push("/", "/");
@@ -59,10 +59,10 @@ const NavBar = () => {
           </Button>
         )}
       </Col>
-      <Col xs={8}>
+      {/* <Col xs={8}>
         <Search />
-      </Col>
-      <Col xs={8}>
+      </Col> */}
+      <Col xs={12}>
         <Flex justifyContent={"flex-end"}>
           <ProfileMenu isLoggedIn isLogin />
         </Flex>
