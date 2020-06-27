@@ -13,9 +13,12 @@ export function omit(list: object[], properties: string[]): object[] {
 
 export async function fetchUser(request) {
   const {
-    headers: { authorization },
+    headers: { authorization, Authorization },
   } = request;
-  const userDetails = jwt.verify(authorization, process.env.SECRET);
+  const userDetails = jwt.verify(
+    authorization || Authorization,
+    process.env.SECRET
+  );
   const user = await getUser(userDetails.email);
   return user;
 }
