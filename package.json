@@ -33,7 +33,7 @@
     "github-markdown-css": "^4.0.0",
     "jest": "^26.4.2",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.5",
+    "knex": "^2.4.0",
     "marked": "^1.1.1",
     "moment": "^2.28.0",
     "next": "9.4.0",
